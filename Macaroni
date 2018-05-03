@@ -1,0 +1,52 @@
+import apcs.Window;
+
+
+public class Macaroni
+{
+    private int x;
+
+    private int y;
+
+    private int[][] maze;
+
+
+    public Macaroni()
+    {
+        x = 300;
+        y = 300;
+    }
+
+
+    public Macaroni( int a, int b )
+    {
+        x = a;
+        y = b;
+    }
+
+
+    public void place()
+    {
+        Window.out.color( "yellow" );
+        Window.out.circle( x, y, 5 );
+    }
+
+
+    public void remove()
+    {
+        Window.out.color( "black" );
+        Window.out.circle( x, y, 5 );
+    }
+
+
+    public int getX()
+    {
+        return x;
+    }
+
+
+    public int getY()
+    {
+        return y;
+    }
+
+}
