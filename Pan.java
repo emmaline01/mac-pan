@@ -8,8 +8,8 @@ public class Pan
     String direction;
     
     public Pan (int[][] m) {
-        x = 0; //500
-        y = 0; //400
+        x = 6; //500
+        y = 6; //400
         maze = m;
         direction = "up";
     }
@@ -37,27 +37,35 @@ public class Pan
         }
         
         Window.out.color( "gray" );
-        Window.out.circle( x, y, 20 );
+        Window.out.circle( x, y, 12 ); //radius = 12 arbitrarily
     }
     
     public boolean canMove(String direction) { //doesn't work YET
-        if (x + 10 < maze[0].length && direction.equals( "right" )) {
-            if (maze[1+12+x*25][12+y*25] == 0) {
+        /* x
+         * 0.....37 = 0
+         * 37....74 = 1
+         */
+        if (x + 10 < 1000 - 12 && direction.equals( "right" )) {
+            //1000 - 5 for the size of the screen - radius of ball
+            if (maze[((y + 12)/25)][((x + 12 + 10)/25)] == 0) { 
+                //+12 to account for offset of array maze to graphic maze
+                //+10 to check for the movement right
                 return true;
             }
         }
-        else if (direction.equals( "left" )) {
-            if (maze[12-1+x*25][12+y*25] == 0) {
+        else if (x - 10 > 5 && direction.equals( "left" )) {
+            if (maze[((y + 12)/25) ][((x + 12 - 10)/25)] == 0) {
                 return true;
             }
         }
-        else if (direction.equals( "up" )) {
-            if (maze[12+x*25][12+1+y*25] == 0) {
+        else if (y - 10 > 5 && direction.equals( "up" )) {
+            if (maze[((y + 12 - 10)/25)][((x + 12)/25)] == 0) {
                 return true;
             }
         }
-        else if (direction.equals( "down" )) {
-            if (maze[12+x*25][12-1+y*25] == 0) {
+        else if (y + 10 < 600 - 12 && direction.equals( "down" )) {
+            //600 - 12 for the size of the screen - radius of ball
+            if (maze[((y + 12 + 10)/25)][((x + 12)/25)] == 0) {
                 return true;
             }
         }
