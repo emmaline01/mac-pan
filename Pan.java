@@ -47,25 +47,27 @@ public class Pan
          */
         if (x + 10 < 1000 - 12 && direction.equals( "right" )) {
             //1000 - 5 for the size of the screen - radius of ball
-            if (maze[((y + 12)/25)][((x + 12 + 10)/25)] == 0) { 
+            if (maze[((y - 12)/25)][((x - 12 + 10 + 12)/25)] == 0) { 
                 //+12 to account for offset of array maze to graphic maze
                 //+10 to check for the movement right
+                //+12 to account for radius
                 return true;
             }
         }
-        else if (x - 10 > 5 && direction.equals( "left" )) {
-            if (maze[((y + 12)/25) ][((x + 12 - 10)/25)] == 0) {
+        else if (x - 10 > 12 && direction.equals( "left" )) {
+            if (maze[((y - 12)/25) ][((x - 12 - 10 + 6)/25)] == 0) {
+                //why tf it's 6 i have no clue.. radius = 12???
                 return true;
             }
         }
-        else if (y - 10 > 5 && direction.equals( "up" )) {
-            if (maze[((y + 12 - 10)/25)][((x + 12)/25)] == 0) {
+        else if (y - 10 > 12 && direction.equals( "up" )) {
+            if (maze[((y - 12 - 10)/25)][((x - 12  + 6)/25)] == 0) {
                 return true;
             }
         }
         else if (y + 10 < 600 - 12 && direction.equals( "down" )) {
             //600 - 12 for the size of the screen - radius of ball
-            if (maze[((y + 12 + 10)/25)][((x + 12)/25)] == 0) {
+            if (maze[((y - 12 + 10 + 12)/25)][((x - 12 + 6)/25)] == 0) {
                 return true;
             }
         }
