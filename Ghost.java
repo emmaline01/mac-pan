@@ -1,3 +1,4 @@
+import apcs.Window;
 
 public abstract class Ghost
 {
@@ -5,6 +6,7 @@ public abstract class Ghost
     private int[][] maze;
     private Pan pan;
     private String color;
+    private String direction;
     
     public Ghost(int[][] m, Pan p)
     {
@@ -13,6 +15,7 @@ public abstract class Ghost
         maze = m;
         pan = p;
         color = "normal";
+        direction = "up";
     }
     
     public abstract void move();
@@ -20,7 +23,16 @@ public abstract class Ghost
     public boolean canMove()
     {
         //TODO
-        return x < maze.length && y < maze.length && maze[x][y] != 1;
+        if (x >= 0 && y >= 0 && x < maze.length && y < maze.length)
+        {
+            int mazeX = x - 12 / 25;
+            int mazeY = y - 12 / 25;
+            if (maze[x][y] != 1)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     public int getX()
@@ -47,11 +59,32 @@ public abstract class Ghost
     {
         //TODO
         
+        Window.frame();
+        if (direction.equals( "up" ))
+        {
+            Window.out.rectangle( x, y - 10, 10, 15 );
+            y -= 10;
+        }
+        else if (direction.equals("down"))
+        {
+            Window.out.rectangle( x, y + 10, 10, 15 );
+            y += 10;
+        }
+        else if (direction.equals( "right" ))
+        {
+            Window.out.rectangle( x - 10, y, 10, 15 );
+            x -= 10;
+        }
+        else
+        {
+            Window.out.rectangle( x + 10, y, 10, 15 );
+            x +=10;
+        }
     }
     
     public boolean eaten()
     {
         //TODO
-        return true;
+        return pan.touchingGhost();
     }
 }
