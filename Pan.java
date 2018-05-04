@@ -18,21 +18,25 @@ public class Pan
         if (Window.key.pressed( "right" )) {
             if (canMove("right")) {
                 x = x + 10;
+                direction = "right";
             }
         }
         else if (Window.key.pressed( "left" )) {
             if (canMove("left")) {
                 x = x - 10;
+                direction = "left";
             }
         }
         else if (Window.key.pressed( "up" )) {
             if (canMove("up")) {
                 y = y - 10;
+                direction = "up";
             }
         }
         else if (Window.key.pressed( "down" )) {
             if (canMove("down")) {
                 y = y + 10;
+                direction = "down";
             }
         }
         
@@ -40,11 +44,8 @@ public class Pan
         Window.out.circle( x, y, 12 ); //radius = 12 arbitrarily
     }
     
-    public boolean canMove(String direction) { //doesn't work YET
-        /* x
-         * 0.....37 = 0
-         * 37....74 = 1
-         */
+    private boolean canMove(String direction) { 
+        
         if (x + 10 < 1000 - 12 && direction.equals( "right" )) {
             //1000 - 5 for the size of the screen - radius of ball
             if (maze[((y - 12)/25)][((x - 12 + 10 + 12)/25)] == 0) { 
@@ -72,5 +73,33 @@ public class Pan
             }
         }
         return false;
+    }
+    
+    public boolean touchingGhost(Ghost g) {
+        //24 bc assuming ghost radius is 12, know that pan radius is 12
+        if (Math.abs( g.getX() - x) <= 24 || Math.abs( g.getY() - y) <= 24) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean touchingMacaroni(Macaroni m) {
+        //know that Macaroni radius = 5, pan radius = 12
+        if (Math.abs( m.getX() - x) <= 17 || Math.abs( m.getY() - y) <= 17) {
+            return true;
+        }
+        return false;
+    }
+    
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
+    }
+    
+    public String getDirection() {
+        return direction;
     }
 }
