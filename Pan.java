@@ -12,6 +12,7 @@ public class Pan
         y = 6; //400
         maze = m;
         direction = "up";
+        
     }
     
     public void move() {
@@ -39,7 +40,30 @@ public class Pan
                 direction = "down";
             }
         }
+        else {
+            if (direction.equals("right")) {
+                if (canMove("right")) {
+                    x = x + 10;
+                }
+            }
+            else if (direction.equals("left")) {
+                if (canMove("left")) {
+                    x = x - 10;
+                }
+            }
+            else if (direction.equals("up")) {
+                if (canMove("up")) {
+                    y = y - 10;
+                }
+            }
+            else if (direction.equals("down")) {
+                if (canMove("down")) {
+                    y = y + 10;
+                }
+            }
+        }
         
+        //Window.out.image( "panImage.png", x, y );
         Window.out.color( "gray" );
         Window.out.circle( x, y, 12 ); //radius = 12 arbitrarily
     }
@@ -89,6 +113,8 @@ public class Pan
             return true;
         }
         return false;
+        
+        //TODO: getting rid of Macaroni getX and getY- use coordinates of maze array
     }
     
     public int getX() {
