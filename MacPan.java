@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.TreeMap;
+
 import apcs.Window;
 
 public class MacPan
@@ -34,21 +37,33 @@ public class MacPan
         };
         Window.size( 1000, 600 );
         Pan p = new Pan(maze);
-        Macaroni mac = new Macaroni(maze);
+        
+        TreeMap<Integer, Macaroni> map = new TreeMap<Integer, Macaroni>();
+        for (int y = 0; y < maze.length; y++) {
+            for (int x = 0; x < maze[0].length;x++) {
+                if (maze[y][x] == 0) {
+                    //m.add( new Macaroni(maze, x, y) );
+                    map.put( y*100 + x, new Macaroni(maze, x, y) );
+                }
+            }
+        }
+        
         while (true) {
             Window.frame();
-            Window.out.background("black");
+            Window.out.background("blue");
             for (int y = 0; y < maze.length; y++) {
                 for (int x = 0; x < maze[0].length;x++) {
-                    if (maze[y][x] == 1) {
-                        Window.out.color("blue"); //blue is walls-> can go in 0
+                    if (maze[y][x] != 1) {
+                        Window.out.color("black"); //blue is walls-> can go in 0
                         Window.out.rectangle( 12+x*25, 12+y*25, 25, 25 );
                     }
-                    else
-                    {
-                        mac.place( x, y );
+                    if (p.touchingMacaroni( y, x )) {
+                        map.get( y*100 + x ).remove();
                     }
                 }
+            }
+            for (Integer i : map.keySet()) {
+                map.get( i ).place();
             }
             p.move();
             
