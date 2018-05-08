@@ -4,31 +4,49 @@ import apcs.Window;
 public class Macaroni
 {
     private int[][] maze;
+    private boolean removed = false;
+    private int x, y;
 
 
-    public Macaroni( int[][] maze )
+    public Macaroni( int[][] maze, int a, int b )
     {
         this.maze = maze;
+        x = a;
+        y = b;
+        place(a, b);
     }
 
 
     public void place()
     {
-        Window.out.image( "macaroniImage.png", 300, 300 );
+        if (removed != true) {
+            Window.out.image( "macaroniImage.png", x * 25 + 12, y * 25 + 12 );
+            maze[y][x] = 2;
+        }
     }
 
 
     public void place( int a, int b )
     {
-        Window.out.image( "macaroniImage.png", a * 25 + 12, b * 25 + 12 );
-        maze[b][a] = 2;
+        if (removed != true) {
+            Window.out.image( "macaroniImage.png", a * 25 + 12, b * 25 + 12 );
+            maze[b][a] = 2;
+        }
     }
 
 
-    public void remove( int a, int b )
-    {
-        Window.out.color( "black" );
-        Window.out.circle( a * 25 + 12, b * 25 + 12, 5 );
+//    public void remove( int a, int b )
+//    {
+//        Window.out.color( "black" );
+//        Window.out.circle( a * 25 + 12, b * 25 + 12, 5 );
+//    }
+    
+    public void remove() {
+        removed = true;
+    }
+    
+    public boolean isRemoved() {
+        return removed;
     }
 
 
