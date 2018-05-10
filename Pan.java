@@ -15,7 +15,7 @@ public class Pan
     public Pan( int[][] m )
     {
         x = 400; 
-        y = 350;
+        y = 360;
         maze = m;
         direction = "";
 
