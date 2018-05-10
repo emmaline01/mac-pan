@@ -1,0 +1,55 @@
+import apcs.Window;
+
+public class Inky extends Ghost
+{
+    private int x, y, length, width;
+    private int[][] maze;
+    private Pan pan;
+    private String color;
+    private String direction;
+    private Ghost blinky;
+    
+    public Inky( int[][] m, Pan p, Ghost g )
+    {
+        super( m, p );
+        super.setColor( "indigo" );
+        blinky = g;
+    }
+
+    public void moveTo(int targetX, int targetY)
+    {
+        
+        // TODO add file name
+        Window.out.image( "", x - 10, y - 10 );
+    }
+
+    public int targetX()
+    {
+        // TODO
+        String pDir = pan.getDirection();
+        
+        int pX = pan.getX();
+        int bX = blinky.getX();
+        
+        if (pDir.equals( "right" ) || pDir.equals( "left" ))
+        {
+            return pX + (2 * bX);
+        }
+        else
+        {
+            return pX * bX;
+        }
+    }
+
+    @Override
+    public int targetY()
+    {
+        // TODO
+        String pDir = pan.getDirection();
+        int pY = pan.getY();
+        int dY = blinky.getY();
+        
+        return 0;
+    }
+
+}
