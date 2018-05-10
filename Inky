@@ -32,25 +32,47 @@ public class Inky extends Ghost
         
         int pX = pan.getX();
         int bX = blinky.getX();
+        int targetX = 0;
         
-        if (pDir.equals( "right" ) || pDir.equals( "left" ))
+        if (pDir.equals( "right" ))
         {
-            return pX + (2 * bX);
+            targetX = pX + 2 + (2 * Math.abs( pX - bX ));
+        }
+        else if (pDir.equals( "left" ))
+        {
+            targetX = pX - 2 - (2 * Math.abs( pX - bX ));
         }
         else
         {
-            return pX * bX;
+            targetX = x;
         }
+        
+        return targetX;
     }
 
     public int targetY()
     {
         // TODO
         String pDir = pan.getDirection();
-        int pY = pan.getY();
-        int dY = blinky.getY();
         
-        return 0;
+        int pY = pan.getY();
+        int bY = blinky.getY();
+        int targetY = 0;
+        
+        if (pDir.equals( "up" ))
+        {
+            targetY = pY - 2 - (2 * Math.abs( pY - bY ));
+        }
+        else if (pDir.equals( "down" ))
+        {
+            targetY = pY + 2 + (2 * Math.abs( pY - bY ));
+        }
+        else
+        {
+            targetY = y;
+        }
+        
+        return targetY;
     }
     
     public void moveTo(int targetX, int targetY)
