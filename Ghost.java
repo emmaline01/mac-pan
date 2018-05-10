@@ -1,33 +1,62 @@
+import java.util.ArrayList;
+import java.util.TreeMap;
 import apcs.Window;
 
 public abstract class Ghost
 {
-    private int x, y;
+    private int x, y, length, width;
     private int[][] maze;
     private Pan pan;
-    private String color;
     private String direction;
+    private TreeMap<String, String> images;
     
     public Ghost(int[][] m, Pan p)
     {
         x = 500;
         y = 300;
+        length = 20;
+        width = 20;
         maze = m;
         pan = p;
-        color = "normal";
         direction = "up";
+        images = new TreeMap<String, String>();
     }
     
-    public abstract void move();
+    public abstract void setImages();
     
-    public boolean canMove()
+    public abstract int targetX();
+    
+    public abstract int targetY();
+    
+    public abstract void moveTo(int targetX, int targetY);
+    
+    public boolean canMove(String direction)
     {
         //TODO
-        if (x >= 0 && y >= 0 && x < maze.length && y < maze.length)
+        if (x + 10 < 1000 - 10 && direction.equals( "right" )) 
         {
-            int mazeX = x - 12 / 25;
-            int mazeY = y - 12 / 25;
-            if (maze[x][y] != 1)
+            if (maze[((y - 10) / 20)][((x + 10) / 20)] != 1) 
+            { 
+                return true;
+            }
+        }
+        else if (x - 10 > 10 && direction.equals( "left" )) 
+        {
+            if (maze[((y - 10) / 20) ][((x - 10) / 20)] != 1) 
+            {
+                return true;
+            }
+        }
+        else if (y - 10 > 10 && direction.equals( "up" )) 
+        {
+            if (maze[((y - 10) / 20)][((x - 10) / 20)] != 1) 
+            {
+                return true;
+            }
+        }
+        else if (y + 10 < 600 - 10 && direction.equals( "down" )) 
+        {
+            if (maze[((y + 10) / 20)][((x - 10) / 20)] != 1) 
             {
                 return true;
             }
@@ -45,14 +74,9 @@ public abstract class Ghost
         return y;
     }
     
-    public void setColor (String c)
+    public boolean eaten()
     {
-        color = c;
-    }
-    
-    public String getColor()
-    {
-        return color;
+        return pan.touchingGhost(this);
     }
     
     public void frightenedMove()
@@ -80,11 +104,5 @@ public abstract class Ghost
             Window.out.rectangle( x + 10, y, 10, 15 );
             x +=10;
         }
-    }
-    
-    public boolean eaten()
-    {
-        //TODO
-        return pan.touchingGhost();
     }
 }
