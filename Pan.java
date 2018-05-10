@@ -14,8 +14,8 @@ public class Pan
 
     public Pan( int[][] m )
     {
-        x = 20; // 500
-        y = 20; // 400
+        x = 400; 
+        y = 350;
         maze = m;
         direction = "";
 
@@ -94,27 +94,30 @@ public class Pan
 
     private boolean canMove( String direction )
     {
-        System.out.println( direction );
-        System.out.println( x );
-        System.out.println( y );
+//        System.out.println( direction );
+//        System.out.println( x );
+//        System.out.println( y );
 
-        if ( direction.equals( "right" ) && ( x - 10 ) / 20 + 1 + 1 <= maze[0].length
-            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20 + 1 + 1] != 1 )
+        if ( direction.equals( "right" ) && ( x + 50 - 10 ) / 20 + 1<= maze[0].length
+                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 1)  //( x - 10 ) / 20 + 1 + 1
+             //( x - 10 ) / 20 + 1 + 1
+            //-10 for array conversion
+            //+ 20 for center of pan
         {
             return true;
         }
-        else if ( direction.equals( "left" ) && ( x - 10 ) / 20 - 1 + 1 >= 0
-            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20 - 1 + 1] != 1 )
+        else if ( direction.equals( "left" ) && ( x - 10 ) / 20 + 1 >= 0
+            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 1 )
         {
             return true;
         }
-        else if ( direction.equals( "up" ) && ( y - 10 ) / 20 - 1 + 1 >= 0
-            && maze[( y - 10 ) / 20 - 1 + 1 ][( x - 10 ) / 20 + 1 ] != 1 )
+        else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
+            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1 )
         {
             return true;
         }
-        else if ( direction.equals( "down" ) && ( y - 10 ) / 20 + 1 + 1 <= maze.length
-            && maze[ ( y - 10 ) / 20 + 1 + 1 ][ ( x - 10 ) / 20 + 1 ] != 1 )
+        else if ( direction.equals( "down" ) && ( y + 50 -10) / 20 + 1 <= maze.length
+            && maze[ ( y + 25 - 10 ) / 20][ ( x - 10 ) / 20 + 1 ] != 1 )
         {
             return true;
         }
@@ -141,8 +144,9 @@ public class Pan
         // }
         // return false;
 
-        if ( maze[arrayY][arrayX] == 2 && ( Math.abs( ( 10 + arrayX * 20 ) - x ) <= 10
-            && Math.abs( ( 10 + arrayY * 20 ) - y ) <= 10 ) )
+        if ( maze[arrayY][arrayX] == 2 && 
+                        ( Math.abs( ( 10 + arrayX * 20 ) - (x + 10) ) <= 10 )
+                        && (Math.abs( (10 + arrayY * 20 ) - (y + 10) ) <= 10 ) )
         {
             maze[arrayY][arrayX] = 0;
             return true;
