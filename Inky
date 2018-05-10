@@ -1,0 +1,63 @@
+import java.util.ArrayList;
+import java.util.TreeMap;
+import apcs.Window;
+
+public class Inky extends Ghost
+{
+    private int x, y, length, width;
+    private TreeMap<String, String> images;
+    private int[][] maze;
+    private Pan pan;
+    private String direction;
+    private Ghost blinky;
+    
+    public Inky( int[][] m, Pan p, Ghost g )
+    {
+        super( m, p );
+        blinky = g;
+    }
+
+    public void setImages()
+    {
+        images.put( "up", "InkyUp.png" );
+        images.put( "right", "InkyRight.png" );
+        images.put( "left", "InkyLeft.png" );
+        images.put( "down", "InkyDown.png" );
+    }
+
+    public int targetX()
+    {
+        // TODO
+        String pDir = pan.getDirection();
+        
+        int pX = pan.getX();
+        int bX = blinky.getX();
+        
+        if (pDir.equals( "right" ) || pDir.equals( "left" ))
+        {
+            return pX + (2 * bX);
+        }
+        else
+        {
+            return pX * bX;
+        }
+    }
+
+    public int targetY()
+    {
+        // TODO
+        String pDir = pan.getDirection();
+        int pY = pan.getY();
+        int dY = blinky.getY();
+        
+        return 0;
+    }
+    
+    public void moveTo(int targetX, int targetY)
+    {
+        // TODO
+        
+        Window.out.image( images.get( direction ), x - 10, y - 10 );
+    }
+
+}
