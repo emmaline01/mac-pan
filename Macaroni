@@ -1,3 +1,4 @@
+
 import apcs.Window;
 
 
@@ -5,58 +6,49 @@ public class Macaroni
 {
     private int[][] maze;
 
+    private boolean removed = false;
 
-    public Macaroni( int[][] maze )
+    private int x, y;
+
+
+    public Macaroni( int[][] maze, int a, int b )
     {
         this.maze = maze;
+        x = a;
+        y = b;
+        place( a, b );
     }
 
 
     public void place()
     {
-        Window.out.image( "macaroniImage.png", 300, 300 );
+        if ( removed != true )
+        {
+            Window.out.image( "macaroniPic.png", x * 20, y * 20 );
+            maze[y][x] = 2;
+        }
     }
 
 
     public void place( int a, int b )
     {
-        Window.out.image( "macaroniImage.png", a * 25 + 12, b * 25 + 12 );
-        maze[b][a] = 2;
+        if ( removed != true )
+        {
+            Window.out.image( "macaroniPic.png", a * 20, b * 20 );
+            maze[b][a] = 2;
+        }
     }
 
 
-    public void remove( int a, int b )
+    public void remove()
     {
-        Window.out.color( "black" );
-        Window.out.circle( a * 25 + 12, b * 25 + 12, 5 );
+        removed = true;
     }
 
 
-    //
-    // public void placeMacsEverywhere( int a, int b )
-    // {
-    // if ( maze[a][b] == 0 )
-    // {
-    // maze[a][b] = 3;
-    // Window.out.image( "macaroniImage.png", b * 10 , a * 10 );
-    // if ( a + 5 < maze.length && maze[a + 5][b] == 0 ) // below
-    // {
-    // placeMacsEverywhere( a + 5, b );
-    // }
-    // if ( b + 5 < maze[0].length && maze[a][b + 5] == 0 ) // right
-    // {
-    // placeMacsEverywhere( a, b + 5 );
-    // }
-    // if ( b - 5 >= 0 && maze[a][b - 5] == 0 ) // left
-    // {
-    // placeMacsEverywhere( a, b - 5 );
-    // }
-    // if ( a - 5 >= 0 && maze[a - 5][b] == 0 ) // left
-    // {
-    // placeMacsEverywhere( a - 5, b );
-    // }
-    // }
-    // }
-    //
+    public boolean isRemoved()
+    {
+        return removed;
+    }
 
 }
