@@ -23,6 +23,8 @@ public class Inky extends Ghost
         images.put( "right", "InkyRight.png" );
         images.put( "left", "InkyLeft.png" );
         images.put( "down", "InkyDown.png" );
+        images.put( "edible", "BlueGhost.png" );
+        images.put( "revert", "RevertingBackGhost.png" );
     }
 
     public int targetX()
@@ -78,6 +80,58 @@ public class Inky extends Ghost
     public void moveTo(int targetX, int targetY)
     {
         // TODO
+        String xDir = "";
+        String yDir = "";
+        
+        // Find if Inky should go left or right to get to the target
+        if (targetX > x)
+        {
+            xDir = "right";
+        }
+        else if (x > targetX)
+        {
+            xDir = "left";
+        }
+        
+        //Find if Inky should go up or down to get the target
+        if (targetY > y)
+        {
+            yDir = "down";
+        }
+        else if (y > targetY)
+        {
+            yDir = "up";
+        }
+        
+        int diffX = Math.abs( targetX - x );
+        int diffY = Math.abs( targetY - y );
+        if (diffX > diffY)
+        {
+            if (!xDir.isEmpty() && canMove(xDir))
+            {
+                direction = xDir;
+                if (xDir.equals("right"))
+                {
+                    x = x + 5;
+                }
+                else
+                {
+                    x = x - 5;
+                }
+            }
+            else if (!yDir.isEmpty() && canMove(yDir))
+            {
+                direction = yDir;
+                if (yDir.equals( "up" ))
+                {
+                    y = y - 5;
+                }
+                else
+                {
+                    y = y + 5;
+                }
+            }
+        }
         
         Window.out.image( images.get( direction ), x - 10, y - 10 );
     }
