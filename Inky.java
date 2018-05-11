@@ -38,7 +38,7 @@ public class Inky extends Ghost
         
         if (pDir.equals( "right" ))
         {
-            targetX = pX + 2 + (2 * Math.abs( pX - bX ));
+            targetX = pX + 2 + (2 * Math.abs( pX - bX )); //(2 * Math.abs( (pX + 2) - bX ))
         }
         else if (pDir.equals( "left" ))
         {
