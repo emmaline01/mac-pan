@@ -53,35 +53,31 @@ public abstract class Ghost
      */
     public boolean canMove(String direction)
     {
-        //TODO
-        if (x + 10 < 1000 - 10 && direction.equals( "right" )) 
+        if ( direction.equals( "right" ) && ( x + 50 - 10 ) / 20 + 1 <= maze[0].length
+            && maze[( y - 10 ) / 20 + 1][( x + 25 - 10 ) / 20] != 1 ) 
+            
+        // ( x - 10 ) / 20 + 1 + 1
+        // -10 for array conversion
+        // + 20 for center of pan
         {
-            if (maze[((y - 10) / 20)][((x + 10) / 20)] != 1) 
-            { 
-                return true;
-            }
+            return true;
         }
-        else if (x - 10 > 10 && direction.equals( "left" )) 
+        else if ( direction.equals( "left" ) && ( x - 10 ) / 20 + 1 >= 0
+            && maze[( y - 10 ) / 20 + 1][( x - 10 ) / 20] != 1 )
         {
-            if (maze[((y - 10) / 20) ][((x - 10) / 20)] != 1) 
-            {
-                return true;
-            }
+            return true;
         }
-        else if (y - 10 > 10 && direction.equals( "up" )) 
+        else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
+            && maze[( y - 10 ) / 20][( x - 10 ) / 20 + 1] != 1 )
         {
-            if (maze[((y - 10) / 20)][((x - 10) / 20)] != 1) 
-            {
-                return true;
-            }
+            return true;
         }
-        else if (y + 10 < 600 - 10 && direction.equals( "down" )) 
+        else if ( direction.equals( "down" ) && ( y + 50 - 10 ) / 20 + 1 <= maze.length
+            && maze[( y + 25 - 10 ) / 20][( x - 10 ) / 20 + 1] != 1 )
         {
-            if (maze[((y + 10) / 20)][((x - 10) / 20)] != 1) 
-            {
-                return true;
-            }
+            return true;
         }
+        
         return false;
     }
     
@@ -142,5 +138,8 @@ public abstract class Ghost
         }
     }
     
-    
+    public void returnToJail()
+    {
+        //TODO
+    }
 }
