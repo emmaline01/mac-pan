@@ -4,16 +4,16 @@ import apcs.Window;
 
 public abstract class Ghost
 {
-    private int x, y, length, width;
-    private int[][] maze;
-    private Pan pan;
-    private String direction;
-    private TreeMap<String, String> images;
+    int x, y, length, width;
+    int[][] maze;
+    Pan pan;
+    String direction;
+    TreeMap<String, String> images;
     
     public Ghost(int[][] m, Pan p)
     {
-        x = 500;
-        y = 300;
+        x = 400;
+        y = 200;
         length = 20;
         width = 20;
         maze = m;
@@ -44,7 +44,7 @@ public abstract class Ghost
      * @param targetX target x-coordinate
      * @param targetY target y-coordinate
      */
-    public abstract void moveTo(int targetX, int targetY);
+    public abstract void move();
     
     /**
      * Identifies whether or not the ghost can move forward in the direction it's facing
@@ -53,31 +53,35 @@ public abstract class Ghost
      */
     public boolean canMove(String direction)
     {
-        if ( direction.equals( "right" ) && ( x + 50 - 10 ) / 20 + 1 <= maze[0].length
-            && maze[( y - 10 ) / 20 + 1][( x + 25 - 10 ) / 20] != 1 ) 
-            
-        // ( x - 10 ) / 20 + 1 + 1
-        // -10 for array conversion
-        // + 20 for center of pan
+        //TODO
+        if (x + 10 < 1000 - 10 && direction.equals( "right" )) 
         {
-            return true;
+            if (maze[((y - 10) / 20)][((x + 10) / 20)] != 1) 
+            { 
+                return true;
+            }
         }
-        else if ( direction.equals( "left" ) && ( x - 10 ) / 20 + 1 >= 0
-            && maze[( y - 10 ) / 20 + 1][( x - 10 ) / 20] != 1 )
+        else if (x - 10 > 10 && direction.equals( "left" )) 
         {
-            return true;
+            if (maze[((y - 10) / 20) ][((x - 10) / 20)] != 1) 
+            {
+                return true;
+            }
         }
-        else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
-            && maze[( y - 10 ) / 20][( x - 10 ) / 20 + 1] != 1 )
+        else if (y - 10 > 10 && direction.equals( "up" )) 
         {
-            return true;
+            if (maze[((y - 10) / 20)][((x - 10) / 20)] != 1) 
+            {
+                return true;
+            }
         }
-        else if ( direction.equals( "down" ) && ( y + 50 - 10 ) / 20 + 1 <= maze.length
-            && maze[( y + 25 - 10 ) / 20][( x - 10 ) / 20 + 1] != 1 )
+        else if (y + 10 < 600 - 10 && direction.equals( "down" )) 
         {
-            return true;
+            if (maze[((y + 10) / 20)][((x - 10) / 20)] != 1) 
+            {
+                return true;
+            }
         }
-        
         return false;
     }
     
@@ -138,8 +142,5 @@ public abstract class Ghost
         }
     }
     
-    public void returnToJail()
-    {
-        //TODO
-    }
+    
 }
