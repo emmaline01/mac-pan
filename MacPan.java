@@ -37,7 +37,7 @@ public class MacPan
         };
         Window.size( 800, 400 );
         Pan p = new Pan( maze );
-
+        Pinky pinky = new Pinky (maze, p );
         TreeMap<Integer, Macaroni> map = new TreeMap<Integer, Macaroni>();
         for ( int y = 0; y < maze.length; y++ )
         {
@@ -75,6 +75,12 @@ public class MacPan
                 map.get( i ).place();
             }
             p.move();
+            pinky.move();
+            if ( p.touchingGhost( pinky ))
+            {
+                //System.out.println("game ended");
+                break;
+            }
         }
     }
 
