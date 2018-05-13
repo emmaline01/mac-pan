@@ -94,12 +94,9 @@ public class Pan
 
     private boolean canMove( String direction )
     {
-//        System.out.println( direction );
-//        System.out.println( x );
-//        System.out.println( y );
-
         if ( direction.equals( "right" ) && ( x + 50 - 10 ) / 20 + 1<= maze[0].length
-                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 1)  //( x - 10 ) / 20 + 1 + 1
+                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 1 
+                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 4 )  //( x - 10 ) / 20 + 1 + 1
              //( x - 10 ) / 20 + 1 + 1
             //-10 for array conversion
             //+ 20 for center of pan
@@ -107,17 +104,20 @@ public class Pan
             return true;
         }
         else if ( direction.equals( "left" ) && ( x - 10 ) / 20 + 1 >= 0
-            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 1 )
+            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 1 
+            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 4 )
         {
             return true;
         }
         else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
-            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1 )
+            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1 
+            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 4 )
         {
             return true;
         }
         else if ( direction.equals( "down" ) && ( y + 50 -10) / 20 + 1 <= maze.length
-            && maze[ ( y + 25 - 10 ) / 20][ ( x - 10 ) / 20 + 1 ] != 1 )
+            && maze[ ( y + 25 - 10 ) / 20][ ( x - 10 ) / 20 + 1 ] != 1 
+            && maze[ ( y + 25 - 10 ) / 20][ ( x - 10 ) / 20 + 1 ] != 4 )
         {
             return true;
         }
@@ -127,8 +127,7 @@ public class Pan
 
     public boolean touchingGhost( Ghost g )
     {
-        // 24 bc assuming ghost radius is 12, know that pan radius is 12
-        if ( Math.abs( g.getX() - x ) <= 24 || Math.abs( g.getY() - y ) <= 24 )
+        if ( Math.abs( g.getX() - x ) <= 10 && Math.abs( g.getY() - y ) <= 10 )
         {
             return true;
         }
