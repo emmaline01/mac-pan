@@ -76,11 +76,6 @@ public class MacPan
             }
             p.move();
             pinky.move();
-            if ( p.touchingGhost( pinky ))
-            {
-                //System.out.println("game ended");
-                break;
-            }
         }
     }
 
