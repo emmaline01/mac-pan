@@ -4,11 +4,11 @@ import apcs.Window;
 
 public abstract class Ghost
 {
-    int x, y, length, width;
-    int[][] maze;
-    Pan pan;
-    String direction;
-    TreeMap<String, String> images;
+    protected int x, y, length, width;
+    protected int[][] maze;
+    protected Pan pan;
+    protected String direction;
+    protected TreeMap<String, String> images;
     
     public Ghost(int[][] m, Pan p)
     {
@@ -44,8 +44,67 @@ public abstract class Ghost
      * @param targetX target x-coordinate
      * @param targetY target y-coordinate
      */
-    public abstract void move();
-    
+
+    public void move()
+    {
+        int targetX = targetX();
+        int targetY = targetY();
+        System.out.println("targetx: " + targetX + " targety: " + targetY);
+
+        int diffX = Math.abs( targetX - x );
+        int diffY = Math.abs( targetY - y );
+        String xDir = "";
+        String yDir = "";
+
+        // should the ghost head right or left?
+        if ( targetX > x )
+        {
+            xDir = "right";
+        }
+        else
+        {
+            xDir = "left";
+        }
+        // should the ghost head up or down?
+        if ( targetY > y )
+        {
+            yDir = "down";
+        }
+        else
+        {
+            yDir = "up";
+        }
+
+        if ( diffX <= diffY && canMove( xDir )  )
+        {
+            direction = xDir;
+
+            if ( xDir.equals( "right" ) )
+            {
+                x = x + 5;
+            }
+            else
+            {
+                x = x - 5;
+            }
+        }
+        else if ( diffY >= diffX && canMove( yDir ) )
+        {
+            direction = yDir;
+
+            if ( xDir.equals( "up" ) )
+            {
+                y = y - 5;
+            }
+            else
+            {
+                y = y + 5;
+            }
+        }
+
+        Window.out.image( images.get( direction ), x, y );
+    }
+
     /**
      * Identifies whether or not the ghost can move forward in the direction it's facing
      * @param direction The direction the ghost is heading in
@@ -53,7 +112,6 @@ public abstract class Ghost
      */
     public boolean canMove(String direction)
     {
-        //TODO
         if (x + 10 < 1000 - 10 && direction.equals( "right" )) 
         {
             if (maze[((y - 10) / 20)][((x + 10) / 20)] != 1) 
