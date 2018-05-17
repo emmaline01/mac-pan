@@ -38,8 +38,8 @@ public class MacPan
         Window.size( 800, 400 );
         Pan p = new Pan( maze );
         Pinky pinky = new Pinky (maze, p ); //pink
-        Inky inky = new Inky (maze, p ); //blue
         Blinky blinky = new Blinky (maze, p ); //red
+        Inky inky = new Inky (maze, p , blinky ); //blue
 
         TreeMap<Integer, Macaroni> map = new TreeMap<Integer, Macaroni>();
         for ( int y = 0; y < maze.length; y++ )
@@ -82,7 +82,7 @@ public class MacPan
             pinky.move(); //pinky ghost
             inky.move(); //blue ghost
 
-            //blinky.move(); //red ghost
+            blinky.move(); //red ghost
             if ( p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
                  || p.touchingGhost( blinky )) 
             {
