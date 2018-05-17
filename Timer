@@ -1,0 +1,20 @@
+
+public class Timer
+{
+    double time;
+    
+    public Timer()
+    {
+        time = 0;
+    }
+    
+    public void count()
+    {
+        time++;
+    }
+    
+    public int getSecond()
+    {
+        return (int) time / 30;
+    }
+}
