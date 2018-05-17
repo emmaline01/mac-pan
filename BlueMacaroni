@@ -1,0 +1,30 @@
+import apcs.Window;
+
+public class BlueMacaroni extends Macaroni
+{
+
+    public BlueMacaroni( int[][] maze, int a, int b )
+    {
+        super( maze, a, b );
+        image = "blueMacaroni.png";
+    }
+    
+    public void place()
+    {
+        if ( removed != true )
+        {
+            Window.out.image( image, x * 20, y * 20 );
+            maze[y][x] = 5;
+        }
+    }
+
+    public void place( int a, int b )
+    {
+        if ( removed != true )
+        {
+            Window.out.image( image, a * 20, b * 20 );
+            maze[b][a] = 5;
+        }
+    }
+
+}
