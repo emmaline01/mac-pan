@@ -122,7 +122,7 @@ public abstract class Ghost
                     y += shiftYArr[index];
                     break;
                 }
-                System.out.println( direction );
+                //System.out.println( direction );
             }
         }
 
