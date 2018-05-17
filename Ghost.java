@@ -12,8 +12,8 @@ public abstract class Ghost
     
     protected String[] dirArr = {"right", "up", "down", "left"};
     protected int[] dirIndex = {0, 1, 2, 3};
-    protected int[] shiftXArr = {5, 0, 0, -5};
-    protected int[] shiftYArr = {0, -5, 5, 0};
+    protected int[] shiftXArr = {4, 0, 0, -4};
+    protected int[] shiftYArr = {0, -4, 4, 0};
     
     public Ghost(int[][] m, Pan p)
     {
