@@ -4,18 +4,21 @@ import apcs.Window;
 
 public abstract class Ghost
 {
-    protected int x, y, length, width;
+    protected int x, y;
     protected int[][] maze;
     protected Pan pan;
     protected String direction;
     protected TreeMap<String, String> images;
     
+    protected String[] dirArr = {"right", "up", "down", "left"};
+    protected int[] dirIndex = {0, 1, 2, 3};
+    protected int[] shiftXArr = {5, 0, 0, -5};
+    protected int[] shiftYArr = {0, -5, 5, 0};
+    
     public Ghost(int[][] m, Pan p)
     {
         x = 400;
         y = 200;
-        length = 20;
-        width = 20;
         maze = m;
         pan = p;
         direction = "up";
@@ -47,62 +50,83 @@ public abstract class Ghost
 
     public void move()
     {
-        int targetX = targetX();
-        int targetY = targetY();
-        System.out.println("targetx: " + targetX + " targety: " + targetY);
-
-        int diffX = Math.abs( targetX - x );
-        int diffY = Math.abs( targetY - y );
-        String xDir = "";
-        String yDir = "";
-
-        // should the ghost head right or left?
-        if ( targetX > x )
+        if (maze[((y - 10) / 20)][((x - 10) / 20)] == 4)
         {
-            xDir = "right";
+            direction = "up";
+            y = y - 5;
         }
         else
         {
-            xDir = "left";
-        }
-        // should the ghost head up or down?
-        if ( targetY > y )
-        {
-            yDir = "down";
-        }
-        else
-        {
-            yDir = "up";
-        }
+            int targetX = targetX();
+            int targetY = targetY();
+            //System.out.println("targetx: " + targetX + " targety: " + targetY);
 
-        if ( diffX <= diffY && canMove( xDir )  )
-        {
-            direction = xDir;
+            // Find how far each current coordinate value is to the target coordinate values
+            int diffX = targetX - x;
+            int diffY = targetY - y;
 
-            if ( xDir.equals( "right" ) )
+            int[] dirNum = new int[4];
+            
+            if (diffX >= Math.abs( diffY ))
             {
-                x = x + 5;
+                dirNum[0] = 0;
+            }
+            else if (diffX <= -Math.abs( diffY ))
+            {
+                dirNum[0] = 3;
+            }
+            else if (diffY >= Math.abs( diffX ))
+            {
+                dirNum[0] = 2;
             }
             else
             {
-                x = x - 5;
+                dirNum[0] = 1;
             }
-        }
-        else if ( diffY >= diffX && canMove( yDir ) )
-        {
-            direction = yDir;
-
-            if ( xDir.equals( "up" ) )
+            
+            if (dirNum[0] == 0 || dirNum[0] == 3)
             {
-                y = y - 5;
+                if (diffY >= 0)
+                {
+                    dirNum[1] = 2;
+                }
+                else
+                {
+                    dirNum[1] = 1;
+                }
             }
             else
             {
-                y = y + 5;
+                if (diffX >= 0)
+                {
+                    dirNum[1] = 0;
+                }
+                else
+                {
+                    dirNum[1] = 3;
+                }
+            }
+            
+            dirNum[2] = 3 - dirNum[0];
+            dirNum[3] = 3 - dirNum[1];
+            
+            for (int i = 0; i < dirNum.length; i++)
+            {
+                int index = dirNum[i];
+
+                direction = dirArr[dirNum[i]];
+                
+                if (canMove(direction))
+                {
+                    x += shiftXArr[index];
+                    y += shiftYArr[index];
+                    break;
+                }
+                System.out.println( direction );
             }
         }
 
-        Window.out.image( images.get( direction ), x, y );
+        Window.out.image( images.get( direction ), x , y );
     }
 
     /**
@@ -199,6 +223,4 @@ public abstract class Ghost
             x +=10;
         }
     }
-    
-    
 }
