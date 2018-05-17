@@ -137,23 +137,17 @@ public abstract class Ghost
     private boolean canMove( String direction )
     {
         if ( direction.equals( "right" ) && ( x + 50 - 10 ) / 20 + 1<= maze[0].length
-                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 1 
-                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 4 )  //( x - 10 ) / 20 + 1 + 1
-             //( x - 10 ) / 20 + 1 + 1
-            //-10 for array conversion
-            //+ 20 for center of pan
+                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 ) / 20] != 1)
         {
             return true;
         }
-        else if ( direction.equals( "left" ) && ( x - 10 ) / 20 + 1 >= 0
-            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 1 
-            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 4 )
+        else if ( direction.equals( "left" ) && (x / 20) >= 0
+            && maze[(y - 10 ) / 20 + 1][(x - 5) / 20] != 1)
         {
             return true;
         }
         else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
-            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1 
-            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 4 )
+            && maze[( y - 5 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1)
         {
             return true;
         }
