@@ -1,14 +1,12 @@
-
 import apcs.Window;
 
 
 public class Macaroni
 {
-    private int[][] maze;
-
-    private boolean removed = false;
-
-    private int x, y;
+    protected int[][] maze;
+    protected boolean removed = false;
+    protected int x, y;
+    protected String image;
 
 
     public Macaroni( int[][] maze, int a, int b )
@@ -16,6 +14,7 @@ public class Macaroni
         this.maze = maze;
         x = a;
         y = b;
+        image = "macaroniPic.png";
         place( a, b );
     }
 
@@ -24,7 +23,7 @@ public class Macaroni
     {
         if ( removed != true )
         {
-            Window.out.image( "macaroniPic.png", x * 20, y * 20 );
+            Window.out.image( image, x * 20, y * 20 );
             maze[y][x] = 2;
         }
     }
@@ -34,11 +33,10 @@ public class Macaroni
     {
         if ( removed != true )
         {
-            Window.out.image( "macaroniPic.png", a * 20, b * 20 );
+            Window.out.image( image, a * 20, b * 20 );
             maze[b][a] = 2;
         }
     }
-
 
     public void remove()
     {
