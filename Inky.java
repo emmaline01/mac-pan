@@ -1,22 +1,15 @@
-import java.util.ArrayList;
-import java.util.TreeMap;
-import apcs.Window;
-
 public class Inky extends Ghost
 {
-    private int x, y, length, width;
-    private TreeMap<String, String> images;
-    private int[][] maze;
-    private Pan pan;
-    private String direction;
-    private Ghost blinky;
-    
-    public Inky( int[][] m, Pan p, Ghost g )
+    Blinky blinky;
+    public Inky( int[][] m, Pan p , Blinky b )
     {
         super( m, p );
-        blinky = g;
+        setImages();
+        blinky = b;
     }
 
+
+    @Override
     public void setImages()
     {
         images.put( "up", "InkyUp.png" );
@@ -27,113 +20,77 @@ public class Inky extends Ghost
         images.put( "revert", "RevertingBackGhost.png" );
     }
 
+
+    @Override
     public int targetX()
     {
-        // TODO
-        String pDir = pan.getDirection();
-        
-        int pX = pan.getX();
-        int bX = blinky.getX();
-        int targetX = 0;
-        
-        if (pDir.equals( "right" ))
+        int panX = pan.getX();
+        int dist = Math.abs( panX - blinky.getX() );
+        int dist2 = 2 * dist;
+        if ( pan.getDirection().equals( "up" ) || pan.getDirection().equals( "down" ) )
         {
-            targetX = pX + 2 + (2 * Math.abs( pX - bX )); //(2 * Math.abs( (pX + 2) - bX ))
+            return panX;
         }
-        else if (pDir.equals( "left" ))
+        else if ( pan.getDirection().equals( "left" ) )
         {
-            targetX = pX - 2 - (2 * Math.abs( pX - bX ));
+            if ( panX - dist2 >= 20 )
+            {
+                return panX - dist2;
+            }
+            else
+            {
+                return panX;
+            }
         }
-        else
+        else if ( pan.getDirection().equals( "right" ) )
         {
-            targetX = x;
+            if ( panX + dist2 <= 800 - 20 )
+            {
+                return panX + dist2;
+            }
+            else
+            {
+                return panX;
+            }
         }
-        
-        return targetX;
+        return 0;
     }
 
+
+    @Override
     public int targetY()
     {
-        // TODO
-        String pDir = pan.getDirection();
-        
-        int pY = pan.getY();
-        int bY = blinky.getY();
-        int targetY = 0;
-        
-        if (pDir.equals( "up" ))
+        int panY = pan.getY();
+        int dist = Math.abs( panY - blinky.getY() );
+        int dist2 = 2 * dist;
+        if ( pan.getDirection().equals( "left" ) || pan.getDirection().equals( "right" ) )
         {
-            targetY = pY - 2 - (2 * Math.abs( pY - bY ));
+            return panY;
         }
-        else if (pDir.equals( "down" ))
+        else if ( pan.getDirection().equals( "up" ) )
         {
-            targetY = pY + 2 + (2 * Math.abs( pY - bY ));
-        }
-        else
-        {
-            targetY = y;
-        }
-        
-        return targetY;
-    }
-    
-    public void moveTo(int targetX, int targetY)
-    {
-        // TODO
-        String xDir = "";
-        String yDir = "";
-        
-        // Find if Inky should go left or right to get to the target
-        if (targetX > x)
-        {
-            xDir = "right";
-        }
-        else if (x > targetX)
-        {
-            xDir = "left";
-        }
-        
-        //Find if Inky should go up or down to get the target
-        if (targetY > y)
-        {
-            yDir = "down";
-        }
-        else if (y > targetY)
-        {
-            yDir = "up";
-        }
-        
-        int diffX = Math.abs( targetX - x );
-        int diffY = Math.abs( targetY - y );
-        if (diffX > diffY)
-        {
-            if (!xDir.isEmpty() && canMove(xDir))
+            if ( panY - dist2 >= 20 )
             {
-                direction = xDir;
-                if (xDir.equals("right"))
-                {
-                    x = x + 5;
-                }
-                else
-                {
-                    x = x - 5;
-                }
+                return panY - dist2;
             }
-            else if (!yDir.isEmpty() && canMove(yDir))
+            else
             {
-                direction = yDir;
-                if (yDir.equals( "up" ))
-                {
-                    y = y - 5;
-                }
-                else
-                {
-                    y = y + 5;
-                }
+                return panY;
             }
         }
-        
-        Window.out.image( images.get( direction ), x - 10, y - 10 );
+        else if ( pan.getDirection().equals( "down" ) )
+        {
+            if ( panY + dist2 <= 800 - 20 )
+            {
+                return panY + dist2;
+            }
+            else
+            {
+                return panY;
+            }
+        }
+        return 0;
     }
+
 
 }
