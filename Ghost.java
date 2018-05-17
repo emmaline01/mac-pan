@@ -17,8 +17,8 @@ public abstract class Ghost
     
     public Ghost(int[][] m, Pan p)
     {
-        x = 400;
-        y = 200;
+        x = 390;
+        y = 210;
         maze = m;
         pan = p;
         direction = "up";
@@ -59,7 +59,7 @@ public abstract class Ghost
         {
             int targetX = targetX();
             int targetY = targetY();
-            //System.out.println("targetx: " + targetX + " targety: " + targetY);
+            System.out.println("targetx: " + targetX + " targety: " + targetY);
 
             // Find how far each current coordinate value is to the target coordinate values
             int diffX = targetX - x;
@@ -134,35 +134,34 @@ public abstract class Ghost
      * @param direction The direction the ghost is heading in
      * @return true if the ghost can continue moving
      */
-    public boolean canMove(String direction)
+    private boolean canMove( String direction )
     {
-        if (x + 10 < 1000 - 10 && direction.equals( "right" )) 
+        if ( direction.equals( "right" ) && ( x + 50 - 10 ) / 20 + 1<= maze[0].length
+                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 1 
+                        && maze[( y - 10 ) / 20 + 1 ][( x + 25 - 10 ) / 20] != 4 )  //( x - 10 ) / 20 + 1 + 1
+             //( x - 10 ) / 20 + 1 + 1
+            //-10 for array conversion
+            //+ 20 for center of pan
         {
-            if (maze[((y - 10) / 20)][((x + 10) / 20)] != 1) 
-            { 
-                return true;
-            }
+            return true;
         }
-        else if (x - 10 > 10 && direction.equals( "left" )) 
+        else if ( direction.equals( "left" ) && ( x - 10 ) / 20 + 1 >= 0
+            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 1 
+            && maze[( y - 10 ) / 20 + 1 ][( x - 10 ) / 20] != 4 )
         {
-            if (maze[((y - 10) / 20) ][((x - 10) / 20)] != 1) 
-            {
-                return true;
-            }
+            return true;
         }
-        else if (y - 10 > 10 && direction.equals( "up" )) 
+        else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
+            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1 
+            && maze[( y - 10 ) / 20 ][( x - 10 ) / 20 + 1 ] != 4 )
         {
-            if (maze[((y - 10) / 20)][((x - 10) / 20)] != 1) 
-            {
-                return true;
-            }
+            return true;
         }
-        else if (y + 10 < 600 - 10 && direction.equals( "down" )) 
+        else if ( direction.equals( "down" ) && ( y + 50 -10) / 20 + 1 <= maze.length
+            && maze[ ( y + 25 - 10 ) / 20][ ( x - 10 ) / 20 + 1 ] != 1 
+            && maze[ ( y + 25 - 10 ) / 20][ ( x - 10 ) / 20 + 1 ] != 4 )
         {
-            if (maze[((y + 10) / 20)][((x - 10) / 20)] != 1) 
-            {
-                return true;
-            }
+            return true;
         }
         return false;
     }
