@@ -8,7 +8,10 @@ public class MacPan
 
     public static void main( String[] args )
     {
+        int numEaten = -1;
+        
         //4 = the jail for ghosts (no macaronis placed there)
+        //5 = blue macaroni
         //1 = walls
         //0 = maze & macaroni
         //40 x 20
@@ -61,6 +64,7 @@ public class MacPan
         {
             Window.frame();
             Window.out.background( "blue" );
+            
             for ( int y = 0; y < maze.length; y++ )
             {
                 for ( int x = 0; x < maze[0].length; x++ )
@@ -74,9 +78,11 @@ public class MacPan
                     if ( p.touchingMacaroni( y, x ) )
                     {
                         map.get( y * 100 + x ).remove();
+                        numEaten++;
                     }
                     if (p.touchingBlueMacaroni( y, x ))
                     {
+                        numEaten++;
                         map.get( y * 100 + x ).remove();
                     }
                 }
@@ -85,6 +91,9 @@ public class MacPan
             {
                 map.get( i ).place();
             }
+
+            Window.out.color( "white" );
+            Window.out.print( "Macaroni eaten: " + numEaten, 630, 397 );
 
             p.move();
             //pinky.move(); //pinky ghost
