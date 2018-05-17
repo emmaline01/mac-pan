@@ -37,7 +37,10 @@ public class MacPan
         };
         Window.size( 800, 400 );
         Pan p = new Pan( maze );
-        Pinky pinky = new Pinky (maze, p );
+        Pinky pinky = new Pinky (maze, p ); //pink
+        Inky inky = new Inky (maze, p ); //blue
+        Blinky blinky = new Blinky (maze, p ); //red
+
         TreeMap<Integer, Macaroni> map = new TreeMap<Integer, Macaroni>();
         for ( int y = 0; y < maze.length; y++ )
         {
@@ -74,14 +77,29 @@ public class MacPan
             {
                 map.get( i ).place();
             }
+
             p.move();
-            pinky.move();
-            if ( p.touchingGhost( pinky ))
+            pinky.move(); //pinky ghost
+            inky.move(); //blue ghost
+
+            //blinky.move(); //red ghost
+            if ( p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
+                 || p.touchingGhost( blinky )) 
             {
-                //System.out.println("game ended");
-                break;
+                break; //end game
+                
             }
         }
+        
+        while ( true )
+        {
+            Window.frame();
+            Window.out.color( "black" );
+            Window.out.rectangle( 1, 1, 1600, 800 );
+            Window.out.color( "red" );
+            Window.out.print( "G  A  M  E    O  V  E  R" , 320, 190 );
+        }
+
     }
 
 }
