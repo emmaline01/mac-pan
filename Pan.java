@@ -11,10 +11,7 @@ public class Pan
 
     String direction;
 
-    /**
-     * Constructs a pan by setting the starting position and initializing the provate variables.
-     * @param m is the maze.
-     */
+
     public Pan( int[][] m )
     {
         x = 400; 
@@ -24,12 +21,7 @@ public class Pan
 
     }
 
-    /**
-     * 
-     * The move method allows the Pan to move when certain keys are pressed. 
-     * If checks if it can move in that direction, then moves by changing its coordinates, 
-     * redrawing itself, and changing the private variable that holds its direction.
-     */
+
     public void move()
     {
         if ( Window.key.pressed( "right" ) )
