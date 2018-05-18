@@ -20,7 +20,11 @@ public class Inky extends Ghost
         images.put( "revert", "RevertingBackGhost.png" );
     }
 
-
+    public String getName()
+    {
+        return "Inky";
+    }
+    
     @Override
     public int targetX()
     {
