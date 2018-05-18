@@ -1,0 +1,44 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+import sun.audio.*;
+
+
+public class Sound
+{
+
+    public void music()
+    {
+        AudioPlayer player = AudioPlayer.player; // background player
+        AudioStream stream; // background music
+//        AudioData data;
+        InputStream input = null;
+
+        ContinuousAudioDataStream loop = null;
+
+        try
+        {
+            input = new FileInputStream("Mii-Channel-Music.wav");
+            stream = new AudioStream(input );
+            AudioPlayer.player.start(stream);
+//            data = stream.getData();
+//            loop = new ContinuousAudioDataStream( data );
+        }
+        catch ( FileNotFoundException e )
+        {
+            System.out.println( "1st error" );
+            e.printStackTrace();
+        }
+        catch ( IOException e )
+        {
+            System.out.println( "2nd error" );
+            e.printStackTrace();
+        }
+
+        player.start( loop );
+
+    }
+
+}
