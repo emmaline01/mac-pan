@@ -1,20 +1,28 @@
 
 public class Timer
 {
-    double time;
+    double millisecond;
+    double second;
     
     public Timer()
     {
-        time = 0;
+        millisecond = 0;
+        second = 0;
     }
     
     public void count()
     {
-        time++;
+        millisecond++;
+        second += millisecond / 990;
+    }
+    
+    public int getMillisecond()
+    {
+        return (int) millisecond;
     }
     
     public int getSecond()
     {
-        return (int) time / 30;
+        return (int) second;
     }
 }
