@@ -1,8 +1,3 @@
-import java.util.TreeMap;
-
-import apcs.Window;
-
-
 public class Pinky extends Ghost
 {
 
