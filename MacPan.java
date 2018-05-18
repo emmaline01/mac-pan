@@ -9,6 +9,9 @@ public class MacPan
 
     public static void main( String[] args )
     {
+        Sound sound = new Sound();
+        sound.music();
+        
         int numEaten = -1;
         
         //4 = the jail for ghosts (no macaronis placed there)
