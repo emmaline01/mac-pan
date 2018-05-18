@@ -24,6 +24,10 @@ public class Blinky extends Ghost
         images.put( "revert", "RevertingBackGhost.png" );
     }
 
+    public String getName()
+    {
+        return "Blinky";
+    }
 
     @Override
     public int targetX()
