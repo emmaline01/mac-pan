@@ -1,4 +1,5 @@
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 import apcs.Window;
 
@@ -8,10 +9,7 @@ public class MacPan
 
     public static void main( String[] args )
     {
-        int numEaten = -1;
-        
         //4 = the jail for ghosts (no macaronis placed there)
-        //5 = blue macaroni
         //1 = walls
         //0 = maze & macaroni
         //40 x 20
@@ -40,9 +38,18 @@ public class MacPan
         };
         Window.size( 800, 400 );
         Pan p = new Pan( maze );
+        
+        ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
+        
         Pinky pinky = new Pinky (maze, p ); //pink
         Blinky blinky = new Blinky (maze, p ); //red
         Inky inky = new Inky (maze, p , blinky ); //blue
+        
+        ghosts.add( pinky );
+        ghosts.add( blinky );
+        ghosts.add( inky );
+        
+        Timer timer = new Timer();
 
         TreeMap<Integer, Macaroni> map = new TreeMap<Integer, Macaroni>();
         for ( int y = 0; y < maze.length; y++ )
@@ -60,6 +67,8 @@ public class MacPan
             }
         }
 
+        Boolean touchedBlueMac = false;
+        
         while ( true )
         {
             Window.frame();
@@ -78,34 +87,59 @@ public class MacPan
                     if ( p.touchingMacaroni( y, x ) )
                     {
                         map.get( y * 100 + x ).remove();
-                        numEaten++;
                     }
                     if (p.touchingBlueMacaroni( y, x ))
                     {
-                        numEaten++;
                         map.get( y * 100 + x ).remove();
+                        touchedBlueMac = true;
                     }
                 }
             }
+            
             for ( Integer i : map.keySet() )
             {
                 map.get( i ).place();
             }
 
-            Window.out.color( "white" );
-            Window.out.print( "Macaroni eaten: " + numEaten, 630, 397 );
-
             p.move();
-            //pinky.move(); //pinky ghost
-            //inky.move(); //blue ghost
-            //blinky.move(); //red ghost
             
-            if ( p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
-                 || p.touchingGhost( blinky )) 
+            if (touchedBlueMac == true)
             {
-                break; //end game
+                int s = pinky.getTimer().getSecond();
                 
+                for (Ghost ghost : ghosts)
+                {
+                    if (p.touchingGhost(ghost))
+                    {
+                        ghost.backToJail();
+                        touchedBlueMac = false;
+                        pinky.timer = new Timer();
+                    }
+                    else if (s <= 25)
+                    {
+                        ghost.frightenedMove();
+                    }
+                    else
+                    {
+                        touchedBlueMac = false;
+                        pinky.timer = new Timer();
+                    }
+                }
             }
+            else
+            {
+                pinky.move(); //pink ghost
+                //blinky.move(); //red ghost
+                //inky.move(); //blue ghost
+                
+                if ( p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
+                     || p.touchingGhost( blinky )) 
+                {
+                    break; //end game
+                }
+            }
+            
+            timer.count();
         }
         
         while ( true )
