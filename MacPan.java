@@ -5,13 +5,11 @@ import apcs.Window;
 
 public class MacPan
 {
+    static boolean won = false;
 
     public static void main( String[] args )
     {
-        int numEaten = -1;
-        
         //4 = the jail for ghosts (no macaronis placed there)
-        //5 = blue macaroni
         //1 = walls
         //0 = maze & macaroni
         //40 x 20
@@ -35,7 +33,7 @@ public class MacPan
             {1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1}, //16
             {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1}, //17
             {1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1}, //18
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //19 
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //19 
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //20
         };
         Window.size( 800, 400 );
@@ -53,10 +51,6 @@ public class MacPan
                 {
                     map.put( y * 100 + x, new Macaroni( maze, x, y ) );
                 }
-                else if (maze[y][x] == 5)
-                {
-                    map.put( y * 100 + x, new BlueMacaroni(maze, x, y) );
-                }
             }
         }
 
@@ -64,7 +58,6 @@ public class MacPan
         {
             Window.frame();
             Window.out.background( "blue" );
-            
             for ( int y = 0; y < maze.length; y++ )
             {
                 for ( int x = 0; x < maze[0].length; x++ )
@@ -78,12 +71,6 @@ public class MacPan
                     if ( p.touchingMacaroni( y, x ) )
                     {
                         map.get( y * 100 + x ).remove();
-                        numEaten++;
-                    }
-                    if (p.touchingBlueMacaroni( y, x ))
-                    {
-                        numEaten++;
-                        map.get( y * 100 + x ).remove();
                     }
                 }
             }
@@ -91,9 +78,6 @@ public class MacPan
             {
                 map.get( i ).place();
             }
-
-            Window.out.color( "white" );
-            Window.out.print( "Macaroni eaten: " + numEaten, 630, 397 );
 
             p.move();
             //pinky.move(); //pinky ghost
@@ -106,9 +90,29 @@ public class MacPan
                 break; //end game
                 
             }
+            
+            if ( map.isEmpty() )
+            {
+                won = true;
+            }
+            if ( won )
+            {
+                break;
+            }
+            
+            
         }
         
-        while ( true )
+        while ( won )
+        {
+            Window.frame();
+            Window.out.color( "black" );
+            Window.out.rectangle( 1, 1, 1600, 800 );
+            Window.out.color( "red" );
+            Window.out.print( "Y  O  U    W  O  N" , 320, 190 );
+        }
+        
+        while ( !won )
         {
             Window.frame();
             Window.out.color( "black" );
