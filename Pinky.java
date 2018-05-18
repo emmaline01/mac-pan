@@ -12,8 +12,6 @@ public class Pinky extends Ghost
         setImages();
     }
 
-
-    @Override
     public void setImages()
     {
         images.put( "up", "PinkyUp.png" );
@@ -24,8 +22,11 @@ public class Pinky extends Ghost
         images.put( "revert", "RevertingBackGhost.png" );
     }
 
-
-    @Override
+    public String getName()
+    {
+        return "Pinky";
+    }
+    
     public int targetX()
     {
         int panX = pan.getX();
@@ -58,11 +59,10 @@ public class Pinky extends Ghost
         return 0;
     }
 
-
-    @Override
     public int targetY()
     {
         int panY = pan.getY();
+        
         if ( pan.getDirection().equals( "left" ) || pan.getDirection().equals( "right" ) )
         {
             return panY;
@@ -91,6 +91,5 @@ public class Pinky extends Ghost
         }
         return 0;
     }
-
 
 }
