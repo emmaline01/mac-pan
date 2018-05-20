@@ -93,14 +93,23 @@ public class MacPan
                     {
                         numEaten++;
                         map.get( y * 100 + x ).remove();
+                        map.remove( y * 100 + x  );
+
                     }
                     if (p.touchingBlueMacaroni( y, x ))
                     {
                         numEaten++;
                         map.get( y * 100 + x ).remove();
+                        map.remove( y * 100 + x  );
                         touchedBlueMac = true;
                     }
                 }
+            }
+            
+            if ( map.isEmpty() )
+            {
+                System.out.println("mapisempty");
+                break;
             }
             
             for ( Integer i : map.keySet() )
@@ -145,6 +154,7 @@ public class MacPan
                 if ( p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
                      || p.touchingGhost( blinky )) 
                 {
+                    System.out.println("ghost death");
                     break; //end game
                 }
             }
@@ -154,11 +164,23 @@ public class MacPan
         
         while ( true )
         {
-            Window.frame();
-            Window.out.color( "black" );
-            Window.out.rectangle( 1, 1, 1600, 800 );
-            Window.out.color( "red" );
-            Window.out.print( "G  A  M  E    O  V  E  R" , 320, 190 );
+            if (map.isEmpty())
+            {
+                Window.frame();
+                Window.out.color( "black" );
+                Window.out.rectangle( 1, 1, 1600, 800 );
+                Window.out.color( "green" );
+                Window.out.print( "   Y  O  U    W  O  N  !" , 320, 190 );
+            }
+            else
+            {
+                Window.frame();
+                Window.out.color( "black" );
+                Window.out.rectangle( 1, 1, 1600, 800 );
+                Window.out.color( "red" );
+                Window.out.print( "G  A  M  E    O  V  E  R" , 320, 190 );
+            }
+            
         }
 
     }
