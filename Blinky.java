@@ -6,14 +6,14 @@ import apcs.Window;
 public class Blinky extends Ghost
 {
 
-    public Blinky( int[][] m, Pan p )
+    public Blinky( int[][] m, Pan p, Timer t )
     {
-        super( m, p );
+        super( m, p, t );
+        dir = 3;
+        direction = "left";
         setImages();
     }
 
-
-    @Override
     public void setImages()
     {
         images.put( "up", "BlinkyUp.png" );
@@ -23,13 +23,34 @@ public class Blinky extends Ghost
         images.put( "edible", "BlueGhost.png" );
         images.put( "revert", "RevertingBackGhost.png" );
     }
-
-    public String getName()
+    
+    public void move()
     {
-        return "Blinky";
+        if (isInJail() && gameTimer.getSecond() <= 10)
+        {
+            moveInJail();
+        }
+        else if (isInJail() && gameTimer.getSecond() > 10 && timer.getSecond() <= 5)
+        {
+            moveInJail();
+            timer.count();
+        }
+        else if (isInJail() && gameTimer.getSecond() > 10 && timer.getSecond() > 5)
+        {
+            timer.reset();
+            timer.stop();
+            moveOutOfJail();
+        }
+        else if (isInJail() && gameTimer.getSecond() > 10)
+        {
+            moveOutOfJail();
+        }
+        else
+        {
+            super.move();
+        }
     }
 
-    @Override
     public int targetX()
     {
         return pan.getX();
