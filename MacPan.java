@@ -9,8 +9,6 @@ public class MacPan
 
     public static void main( String[] args )
     {
-        Sound sound = new Sound();
-        sound.music();
         Window.size( 800, 400 );
         
         while(true)
@@ -56,7 +54,10 @@ public class MacPan
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //19 
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //20
         };
+        Sound sound = new Sound();
+        sound.music();
         
+        Counter c = new Counter();
         Pan p = new Pan( maze );
         
         ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
@@ -87,7 +88,6 @@ public class MacPan
         }
 
         Boolean touchedBlueMac = false;
-        int numEaten = -1;
         
         while ( true )
         {
@@ -106,14 +106,14 @@ public class MacPan
                     }
                     if ( p.touchingMacaroni( y, x ) )
                     {
-                        numEaten++;
+                        c.setNumEaten( c.getNumEaten() + 1);
                         map.get( y * 100 + x ).remove();
                         map.remove( y * 100 + x  );
 
                     }
                     if (p.touchingBlueMacaroni( y, x ))
                     {
-                        numEaten++;
+                        c.setNumEaten( c.getNumEaten() + 1);
                         map.get( y * 100 + x ).remove();
                         map.remove( y * 100 + x  );
                         touchedBlueMac = true;
@@ -137,9 +137,7 @@ public class MacPan
                 map.get( i ).place();
             }
             
-            Window.out.color( "white" );
-            Window.out.print( "Macaroni eaten: " + numEaten, 600, 397 );
-
+            c.displayCounter();
             p.move();
             
             if (touchedBlueMac == true && pinky.timer.getMillisecond() == 0)
@@ -151,7 +149,7 @@ public class MacPan
                 if (p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
                                 || p.touchingGhost( blinky ))
                 {
-                    numEaten += 2;
+                    c.setNumEaten( c.getNumEaten() + 2);
                 }
             }
             else if (touchedBlueMac == true && !pinky.isFrightened() 
