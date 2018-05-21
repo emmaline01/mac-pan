@@ -1,15 +1,13 @@
 public class Inky extends Ghost
 {
     Blinky blinky;
-    public Inky( int[][] m, Pan p , Blinky b )
+    public Inky( int[][] m, Pan p , Blinky b, Timer t )
     {
-        super( m, p );
+        super( m, p, t );
         setImages();
         blinky = b;
     }
 
-
-    @Override
     public void setImages()
     {
         images.put( "up", "InkyUp.png" );
@@ -19,13 +17,34 @@ public class Inky extends Ghost
         images.put( "edible", "BlueGhost.png" );
         images.put( "revert", "RevertingBackGhost.png" );
     }
-
-    public String getName()
+    
+    public void move()
     {
-        return "Inky";
+        if (isInJail() && gameTimer.getSecond() <= 20)
+        {
+            moveInJail();
+        }
+        else if (isInJail() && gameTimer.getSecond() > 20 && timer.getSecond() <= 5)
+        {
+            moveInJail();
+            timer.count();
+        }
+        else if (isInJail() && gameTimer.getSecond() > 20 && timer.getSecond() > 5)
+        {
+            timer.reset();
+            timer.stop();
+            moveOutOfJail();
+        }
+        else if (isInJail() && gameTimer.getSecond() > 20)
+        {
+            moveOutOfJail();
+        }
+        else
+        {
+            super.move();
+        }
     }
     
-    @Override
     public int targetX()
     {
         int panX = pan.getX();
@@ -60,8 +79,6 @@ public class Inky extends Ghost
         return 0;
     }
 
-
-    @Override
     public int targetY()
     {
         int panY = pan.getY();
@@ -95,6 +112,5 @@ public class Inky extends Ghost
         }
         return 0;
     }
-
 
 }
