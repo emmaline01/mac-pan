@@ -16,13 +16,17 @@ import apcs.Window;
  */
 public class Pan
 {
-    int x;
+    private int x;
 
-    int y;
+    private int y;
 
-    int[][] maze;
+    private int[][] maze;
 
-    String direction;
+    private String direction;
+
+    private Timer t;
+    
+    private String next;
 
 
     /**
@@ -37,6 +41,9 @@ public class Pan
         y = 360;
         maze = m;
         direction = "";
+        
+        t = new Timer();
+        next = "";
     }
 
 
@@ -47,12 +54,25 @@ public class Pan
      */
     public void move()
     {
+        if (t.isCounting()) {
+            t.count();
+        }
+
         if ( Window.key.pressed( "right" ) )
         {
             if ( canMove( "right" ) )
             {
                 x = x + 5;
                 direction = "right";
+            }
+            else
+            {
+                if ( t.isCounting() )
+                {
+                    t.reset();
+                }
+                next = "right";
+                t.count();
             }
         }
         else if ( Window.key.pressed( "left" ) )
@@ -62,6 +82,15 @@ public class Pan
                 x = x - 5;
                 direction = "left";
             }
+            else
+            {
+                if ( t.isCounting() )
+                {
+                    t.reset();
+                }
+                next = "left";
+                t.count();
+            }
         }
         else if ( Window.key.pressed( "up" ) )
         {
@@ -69,6 +98,15 @@ public class Pan
             {
                 y = y - 5;
                 direction = "up";
+            }
+            else
+            {
+                if ( t.isCounting() )
+                {
+                    t.reset();
+                }
+                next = "up";
+                t.count();
             }
         }
         else if ( Window.key.pressed( "down" ) )
@@ -78,9 +116,64 @@ public class Pan
                 y = y + 5;
                 direction = "down";
             }
+            else
+            {
+                if ( t.isCounting() )
+                {
+                    t.reset();
+                }
+                next = "down";
+                t.count();
+            }
         }
         else
         {
+            // check if it can turn anytime soon
+            if ( t.getMillisecond() < 500 )
+            {
+                if ( next.equals( "right" ) )
+                {
+                    if ( canMove( "right" ) )
+                    {
+                        x = x + 5;
+                        direction = "right";
+                        next = "";
+                    }
+                }
+                else if ( next.equals( "left" ) )
+                {
+                    if ( canMove( "left" ) )
+                    {
+                        x = x - 5;
+                        direction = "left";
+                        next = "";
+                    }
+                }
+                else if ( next.equals( "up" ) )
+                {
+                    if ( canMove( "up" ) )
+                    {
+                        y = y - 5;
+                        direction = "up";
+                        next = "";
+                    }
+                }
+                else if ( next.equals( "down" ) )
+                {
+                    if ( canMove( "down" ) )
+                    {
+                        y = y + 5;
+                        direction = "down";
+                        next = "";
+                    }
+                }
+            }
+            else
+            {
+                t.reset();
+            }
+
+            // keep going in the same direction
             if ( direction.equals( "right" ) )
             {
                 if ( canMove( "right" ) )
@@ -127,28 +220,24 @@ public class Pan
      */
     private boolean canMove( String direction )
     {
-        if ( direction.equals( "right" ) && ( x + 20 ) / 20 + 1<= maze[0].length
-                        && maze[( y - 10 ) / 20 + 1 ][( x + 20 ) / 20] != 1
-                        && y % 20 == 0)
+        if ( direction.equals( "right" ) && ( x + 20 ) / 20 + 1 <= maze[0].length
+            && maze[( y - 10 ) / 20 + 1][( x + 20 ) / 20] != 1 && y % 20 == 0 )
         {
             return true;
         }
-        else if ( direction.equals( "left" ) && (x / 20) >= 0
-            && maze[(y - 10 ) / 20 + 1][(x - 5) / 20] != 1
-            && y % 20 == 0)
+        else if ( direction.equals( "left" ) && ( x / 20 ) >= 0
+            && maze[( y - 10 ) / 20 + 1][( x - 5 ) / 20] != 1 && y % 20 == 0 )
         {
             return true;
         }
         else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
-            && maze[( y - 5 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1
-            && x % 20 == 0)
+            && maze[( y - 5 ) / 20][( x - 10 ) / 20 + 1] != 1 && x % 20 == 0 )
         {
             return true;
         }
-        else if ( direction.equals( "down" ) && ( y + 40) / 20 + 1 <= maze.length
-            && maze[ ( y + 20 ) / 20][ ( x - 10 ) / 20 + 1 ] != 1 
-            && maze[ ( y + 20 ) / 20][ ( x - 10 ) / 20 + 1 ] != 4 
-            && x % 20 == 0)
+        else if ( direction.equals( "down" ) && ( y + 40 ) / 20 + 1 <= maze.length
+            && maze[( y + 20 ) / 20][( x - 10 ) / 20 + 1] != 1
+            && maze[( y + 20 ) / 20][( x - 10 ) / 20 + 1] != 4 && x % 20 == 0 )
         {
             return true;
         }
