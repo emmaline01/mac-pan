@@ -6,9 +6,9 @@ import apcs.Window;
 public class Pinky extends Ghost
 {
 
-    public Pinky( int[][] m, Pan p )
+    public Pinky( int[][] m, Pan p, Timer t )
     {
-        super( m, p );
+        super( m, p, t );
         setImages();
     }
 
@@ -21,10 +21,28 @@ public class Pinky extends Ghost
         images.put( "edible", "BlueGhost.png" );
         images.put( "revert", "RevertingBackGhost.png" );
     }
-
-    public String getName()
+    
+    public void move()
     {
-        return "Pinky";
+        if (isInJail() && gameTimer.getSecond() < 5)
+        {
+            moveOutOfJail();
+        }
+        else if (isInJail() && timer.getSecond() <= 5)
+        {
+            moveInJail();
+            timer.count();
+        }
+        else if (isInJail() && timer.getSecond() > 5)
+        {
+            timer.reset();
+            timer.stop();
+            moveOutOfJail();
+        }
+        else
+        {
+            super.move();
+        }
     }
     
     public int targetX()
@@ -91,5 +109,4 @@ public class Pinky extends Ghost
         }
         return 0;
     }
-
 }
