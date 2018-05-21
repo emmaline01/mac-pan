@@ -11,8 +11,23 @@ public class MacPan
     {
         Sound sound = new Sound();
         sound.music();
+        Window.size( 800, 400 );
         
-        int numEaten = -1;
+        while(true)
+        {
+            Window.frame();
+            Window.out.background("black");
+            Window.out.color( "white" );
+            Window.out.fontSize( 40 );
+            Window.out.print( "W  E  L  C  O  M  E  !" , 240, 170 );
+            Window.out.fontSize( 20 );
+            Window.out.print( " Please press the spacebar to start!  ", 268, 240 );
+            
+            if (Window.key.pressed( "space" ))
+            {
+                break;
+            }
+        }
         
         //4 = the jail for ghosts (no macaronis placed there)
         //1 = walls
@@ -22,18 +37,18 @@ public class MacPan
             //  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //1
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //2
-            {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //3
-            {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //4
+            {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 5, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //3
+            {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 5, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //4
             {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //5
-            {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //6
+            {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 5, 1}, //6
             {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //7
             {1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1}, //8
             {1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 4, 4, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1}, //9
-            {1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 4, 4, 4, 4, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //10
-            {1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 4, 4, 4, 4, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //11
+            {1, 5, 1, 1, 1, 1, 1, 0, 1, 5, 0, 0, 0, 0, 0, 1, 0, 1, 4, 4, 4, 4, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //10
+            {1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 4, 4, 4, 4, 1, 0, 1, 0, 1, 1, 1, 1, 5, 1, 5, 1, 1, 1, 1, 1, 0, 1}, //11
             {1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 4, 4, 4, 4, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //12
             {1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //13
-            {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1}, //14
+            {1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 5, 1}, //14
             {1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1}, //15
             {1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1}, //16
             {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1}, //17
@@ -41,20 +56,19 @@ public class MacPan
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //19 
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //20
         };
-        Window.size( 800, 400 );
+        
         Pan p = new Pan( maze );
         
         ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
         
-        Pinky pinky = new Pinky (maze, p ); //pink
-        Blinky blinky = new Blinky (maze, p ); //red
-        Inky inky = new Inky (maze, p , blinky ); //blue
+        Timer timer = new Timer();
+        Pinky pinky = new Pinky (maze, p, timer ); //pink
+        Blinky blinky = new Blinky (maze, p, timer ); //red
+        Inky inky = new Inky (maze, p , blinky, timer ); //blue
         
         ghosts.add( pinky );
         ghosts.add( blinky );
         ghosts.add( inky );
-        
-        Timer timer = new Timer();
 
         TreeMap<Integer, Macaroni> map = new TreeMap<Integer, Macaroni>();
         for ( int y = 0; y < maze.length; y++ )
@@ -73,6 +87,7 @@ public class MacPan
         }
 
         Boolean touchedBlueMac = false;
+        int numEaten = -1;
         
         while ( true )
         {
@@ -102,6 +117,11 @@ public class MacPan
                         map.get( y * 100 + x ).remove();
                         map.remove( y * 100 + x  );
                         touchedBlueMac = true;
+                        timer.saveTime();
+                        for (Ghost ghost : ghosts)
+                        {
+                            ghost.frightened = true;
+                        }
                     }
                 }
             }
@@ -122,37 +142,79 @@ public class MacPan
 
             p.move();
             
-            if (touchedBlueMac == true)
+            if (touchedBlueMac == true && pinky.timer.getMillisecond() == 0)
             {
-                int s = pinky.getTimer().getSecond();
+                pinky.frightenedMove();
+                blinky.frightenedMove();
+                inky.frightenedMove();
                 
-                for (Ghost ghost : ghosts)
+                if (p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
+                                || p.touchingGhost( blinky ))
                 {
-                    if (p.touchingGhost(ghost))
+                    numEaten += 2;
+                }
+            }
+            else if (touchedBlueMac == true && !pinky.isFrightened() 
+                            && !blinky.isFrightened() && !inky.isFrightened())
+            {
+                touchedBlueMac = false;
+                pinky.move(); //pink ghost
+                blinky.move(); //red ghost
+                inky.move(); //blue ghost
+            }
+            else if (touchedBlueMac == true && (pinky.isFrightened() 
+                            || blinky.isFrightened() || inky.isFrightened()))
+            {
+                if (pinky.isFrightened())
+                {
+                    pinky.frightenedMove();
+                }
+                else
+                {
+                    pinky.move();
+                    if (p.touchingGhost( pinky ))
                     {
-                        ghost.backToJail();
-                        touchedBlueMac = false;
-                        pinky.timer = new Timer();
+                        System.out.println("ghost death");
+                        break; //end game
                     }
-                    else if (s <= 25)
+                }
+                
+                if (blinky.isFrightened())
+                {
+                    blinky.frightenedMove();
+                }
+                else
+                {
+                    blinky.move();
+                    if (p.touchingGhost( blinky ))
                     {
-                        ghost.frightenedMove();
+                        System.out.println("ghost death");
+                        break; //end game
                     }
-                    else
+                }
+                
+                if (inky.isFrightened())
+                {
+                    inky.frightenedMove();
+                }
+                else
+                {
+                    inky.move();
+                    if (p.touchingGhost(inky))
                     {
-                        touchedBlueMac = false;
-                        pinky.timer = new Timer();
+                        System.out.println("ghost death");
+                        break; //end game
                     }
                 }
             }
             else
             {
                 pinky.move(); //pink ghost
-                //blinky.move(); //red ghost
-                //inky.move(); //blue ghost
+                blinky.move(); //red ghost
+                inky.move(); //blue ghost
                 
                 if ( p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
-                     || p.touchingGhost( blinky )) 
+                                || p.touchingGhost( blinky )) 
                 {
                     System.out.println("ghost death");
                     break; //end game
