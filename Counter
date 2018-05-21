@@ -1,0 +1,40 @@
+import apcs.Window;
+
+public class Counter
+{
+    private int numEaten;
+
+    /**
+     * Counter constructor.
+     */
+    public Counter() {
+        numEaten = -1;
+    }
+    
+    /**
+     * 
+     * Displays numEaten at the bottom corner of the screen.
+     */
+    public void displayCounter() {
+        Window.out.color( "white" );
+        Window.out.print( "Score: " + numEaten, 670, 397 );
+    }
+    
+    /**
+     * 
+     * Setter method for numEaten.
+     * @param i is the number to set numEaten to.
+     */
+    public void setNumEaten(int i) {
+        numEaten = i;
+    }
+    
+    /**
+     * 
+     * Accessor method for numEaten.
+     * @return numEaten
+     */
+    public int getNumEaten() {
+        return numEaten;
+    }
+}
