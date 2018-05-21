@@ -1,19 +1,18 @@
 
 public class Timer
 {
-    double millisecond;
-    double second;
+    private double millisecond;
+    private int stamp;
+    private boolean counting = false;
     
     public Timer()
     {
         millisecond = 0;
-        second = 0;
     }
     
     public void count()
     {
-        millisecond++;
-        second += millisecond / 990;
+        millisecond += 50;
     }
     
     public int getMillisecond()
@@ -23,6 +22,36 @@ public class Timer
     
     public int getSecond()
     {
-        return (int) second;
+        return (int) millisecond / 1000;
+    }
+    
+    public void reset()
+    {
+        millisecond = 0;
+    }
+    
+    public void saveTime()
+    {
+        stamp = getSecond();
+    }
+    
+    public int getSavedTime()
+    {
+        return stamp;
+    }
+    
+    public void start()
+    {
+        counting = true;
+    }
+    
+    public void stop()
+    {
+        counting = false;
+    }
+    
+    public boolean isCounting()
+    {
+        return counting;
     }
 }
