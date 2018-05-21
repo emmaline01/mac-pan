@@ -1,51 +1,42 @@
-import java.util.ArrayList;
 import java.util.TreeMap;
 import apcs.Window;
 
 public abstract class Ghost
 {
-    private ArrayList<String> bDirSwitch;
-    private ArrayList<String> iDirSwitch;
-    
     protected int x, y;
     protected int[][] maze;
     protected Pan pan;
     protected String direction;
     protected TreeMap<String, String> images;
     protected Timer timer;
-    protected String name;
+    protected Timer gameTimer;
+    //protected Timer eatenTimer;
+    protected boolean frightened = false;
     
+    protected int dir;
     protected String[] dirArr = {"right", "up", "down", "left"};
-    protected int[] dirIndex = {0, 1, 2, 3};
+    protected int[] oppDirIndex = { 3, 2, 1, 0 };
+    
     protected int[] shiftXArr = {4, 0, 0, -4};
     protected int[] shiftYArr = {0, -4, 4, 0};
     
-    public Ghost(int[][] m, Pan p)
+    public Ghost(int[][] m, Pan p, Timer t)
     {
         x = 390;
         y = 210;
         maze = m;
         pan = p;
-        direction = "up";
+        direction = "right";
+        dir = 0;
         images = new TreeMap<String, String>();
+        gameTimer = t;
         timer = new Timer();
-        name = getName();
-        
-        bDirSwitch = new ArrayList<String>();
-        bDirSwitch.add( "right" );
-        bDirSwitch.add( "left" );
-        
-        iDirSwitch = new ArrayList<String>();
-        iDirSwitch.add( "left" );
-        iDirSwitch.add( "right" );
     }
     
     /**
      * Put the images of individual ghosts when heading in different directions
      */
     public abstract void setImages();
-    
-    public abstract String getName();
     
     /**
      * Find x-coordinate the image should move to
@@ -61,301 +52,142 @@ public abstract class Ghost
     
     /**
      * Move to specified coordinates.
-     * @param targetX target x-coordinate
-     * @param targetY target y-coordinate
      */
-
     public void move()
     {
-        if (maze[((y - 10) / 20)][((x - 10) / 20)] == 4)
+        int targetX = targetX();
+        int targetY = targetY();
+
+        // Find how far each current coordinate value is to the target coordinate values
+        int diffX = targetX - x;
+        int diffY = targetY - y;
+
+        int[] dirOrder = new int[4];
+        if (diffX >= Math.abs( diffY ))
         {
-            if (name.equals( "Pinky" ))
-            {
-                direction = "up";
-                y -= 5;
-            }
-            /*
-            else if (name.equals( "Blinky" ))
-            {
-                if (timer.getSecond() <= 10)
-                {
-                    if (canMove(bDirSwitch.get( 0 )))
-                    {
-                        direction = bDirSwitch.get(0);
-                        if (direction.equals( "right" ))
-                        {
-                            x += 5;
-                        }
-                        else
-                        {
-                            x -= 5;
-                        }
-                    }
-                    else
-                    {
-                        bDirSwitch.add( bDirSwitch.remove( 0 ) );
-                        direction = bDirSwitch.get(0);
-                        if (direction.equals( "right" ))
-                        {
-                            x += 5;
-                        }
-                        else
-                        {
-                            x -= 5;
-                        }
-                    }
-                }
-                else
-                {
-                    if (x < 390)
-                    {
-                        direction = "right";
-                        x += 5;
-                    }
-                    else if (x > 390)
-                    {
-                        direction = "left";
-                        x -= 5;
-                    }
-                    else
-                    {
-                        direction = "up";
-                        y -= 5;
-                    }
-                }
-            }
-            else if (name.equals( "Inky" ))
-            {
-                if (timer.getSecond() <= 20)
-                {
-                    if (canMove(iDirSwitch.get( 0 )))
-                    {
-                        direction = iDirSwitch.get(0);
-                        if (direction.equals( "right" ))
-                        {
-                            x += 5;
-                        }
-                        else
-                        {
-                            x -= 5;
-                        }
-                    }
-                    else
-                    {
-                        iDirSwitch.add( iDirSwitch.remove( 0 ) );
-                        direction = iDirSwitch.get(0);
-                        if (direction.equals( "right" ))
-                        {
-                            x += 5;
-                        }
-                        else
-                        {
-                            x -= 5;
-                        }
-                    }
-                }
-                else
-                {
-                    if (x < 390)
-                    {
-                        direction = "right";
-                        x += 5;
-                    }
-                    else if (x > 390)
-                    {
-                        direction = "left";
-                        x -= 5;
-                    }
-                    else
-                    {
-                        direction = "up";
-                        y -= 5;
-                    }
-                }
-            }
-            
-            Window.out.image( images.get( direction ), x , y );
-            timer.count();
-            return;*/
+            dirOrder[0] = 0; // right
+        }
+        else if (diffX <= -Math.abs( diffY ))
+        {
+            dirOrder[0] = 3; // left
+        }
+        else if (diffY >= Math.abs( diffX ))
+        {
+            dirOrder[0] = 2; // down
         }
         else
         {
-            int targetX = targetX();
-            int targetY = targetY();
-            //System.out.println("targetx: " + targetX + " targety: " + targetY);
-
-            // Find how far each current coordinate value is to the target coordinate values
-            int diffX = targetX - x;
-            int diffY = targetY - y;
-
-            int[] dirOrder = new int[4];
+            dirOrder[0] = 1; // up
+        }
             
-            if (diffX >= Math.abs( diffY ))
+        if (dirOrder[0] == 0 || dirOrder[0] == 3)
+        {
+            if (diffY >= 0)
             {
-                dirOrder[0] = 0;
-            }
-            else if (diffX <= -Math.abs( diffY ))
-            {
-                dirOrder[0] = 3;
-            }
-            else if (diffY >= Math.abs( diffX ))
-            {
-                dirOrder[0] = 2;
+                dirOrder[1] = 2; // down
             }
             else
             {
-                dirOrder[0] = 1;
+                dirOrder[1] = 1; // up
             }
-            
-            if (dirOrder[0] == 0 || dirOrder[0] == 3)
+        }
+        else
+        {
+            if (diffX >= 0)
             {
-                if (diffY >= 0)
-                {
-                    dirOrder[1] = 2;
-                }
-                else
-                {
-                    dirOrder[1] = 1;
-                }
+                dirOrder[1] = 0; // right
             }
             else
             {
-                if (diffX >= 0)
-                {
-                    dirOrder[1] = 0;
-                }
-                else
-                {
-                    dirOrder[1] = 3;
-                }
+                dirOrder[1] = 3; // left
             }
+        }
             
-            dirOrder[2] = 3 - dirOrder[0];
-            dirOrder[3] = 3 - dirOrder[1];
+        dirOrder[2] = oppDirIndex[ dirOrder[0] ];
+        dirOrder[3] = oppDirIndex[ dirOrder[1] ];
             
-            for (int i = 0; i < dirOrder.length; i++)
+        for (int i = 0; i < dirOrder.length; i++)
+        {
+            dir = dirOrder[i];
+            direction = dirArr[dirOrder[i]];
+            
+            if ( canMove(direction) )
             {
-                int index = dirOrder[i];
-
-                direction = dirArr[dirOrder[i]];
-                
-                if (canMove(direction))
-                {
-                    x += shiftXArr[index];
-                    y += shiftYArr[index];
-                    break;
-                }
+                moveForward();
+                break;
             }
-            Window.out.image( images.get( direction ), x , y );
-            timer.count();
         }
     }
     
-    /**
-     * The ghosts' movements when the pan eats the blue macaroni
-     * protected String[] dirArr = {"right", "up", "down", "left"};
-     * protected int[] dirIndex = {0, 1, 2, 3};
-     * protected int[] shiftXArr = {4, 0, 0, -4};
-     * protected int[] shiftYArr = {0, -4, 4, 0};
-     */
-    public void frightenedMove()
+    public void moveForward()
     {
-        //TODO
-        if (timer.getMillisecond() == 0)
+        x += shiftXArr[dir];
+        y += shiftYArr[dir];
+        direction = dirArr[dir];
+        
+        Window.out.image( images.get( direction ), x , y );
+    }
+    
+    public void dirReverse(int d)
+    {
+        dir = oppDirIndex[d];
+        direction = dirArr[dir];
+    }
+    
+    public boolean isInJail()
+    {
+        return (( maze[ ( y + 1 ) / 20][ ( x + 1 ) / 20 ] == 4 )
+                        || ( maze[ ( y + 1 ) / 20 ][ (x + 19) / 20] == 4 )
+                        || ( maze[(y + 19) / 20][(x + 1) / 20] == 4 )
+                        || ( maze[(y + 19) / 20][(x + 19) / 20] == 4 ));
+    }
+    
+    public void moveInJail()
+    {
+        if (!canMove(direction))
         {
-            int index = 0;
-            for (; index < dirArr.length ; index++)
-            {
-                if (dirArr[index].equals(direction))
-                {
-                    break;
-                }
-            }
-            
-            index = 3 - index; 
-            
-            direction = dirArr[index];
-            x += shiftXArr[index];
-            y += shiftYArr[index];
-            
-            Window.out.image( images.get( "edible" ), x , y );
+            dirReverse(dir);
+            moveForward();
         }
         else
         {
-            if (timer.getSecond() <= 15 || (timer.getSecond() > 15 && timer.getSecond() % 2 == 0))
-            {
-                int index = 0;
-                
-                if (!canMove(direction))
-                {
-                    index = (int) (Math.random() * 4);
-                    
-                    while (!canMove(dirArr[index]))
-                    {
-                        index = (int) (Math.random() * 4);
-                    }
-                    
-                    direction = dirArr[index];
-                    x += shiftXArr[index];
-                    y += shiftYArr[index];
-                }
-                else
-                {
-                    for (int i = 0; i < dirArr.length; i++)
-                    {
-                        if (dirArr[i].equals(direction))
-                        {
-                            index = i;
-                            break;
-                        }
-                    }
-                    
-                    x += shiftXArr[index];
-                    y += shiftYArr[index];
-                }
-                
-                Window.out.image( images.get( "edible" ), x , y );
-            }
-            else if (timer.getSecond() > 15 && timer.getSecond() % 2 == 1)
-            {
-                int index = 0;
-                
-                if (!canMove(direction))
-                {
-                    index = (int) (Math.random() * 4);
-                    
-                    while (!canMove(dirArr[index]))
-                    {
-                        index = (int) (Math.random() * 4);
-                    }
-                    
-                    direction = dirArr[index];
-                    x += shiftXArr[index];
-                    y += shiftYArr[index];
-                }
-                else
-                {
-                    for (int i = 0; i < dirArr.length; i++)
-                    {
-                        if (dirArr[i].equals(direction))
-                        {
-                            index = i;
-                            break;
-                        }
-                    }
-                    
-                    x += shiftXArr[index];
-                    y += shiftYArr[index];
-                }
-                
-                Window.out.image( images.get( "revert" ), x , y );
-            }
+            moveForward();
         }
-        
-        timer.count();
-        //System.out.println("millisecond: " + timer.getMillisecond() + "   second: " + timer.getSecond());
     }
-
+    
+    public void moveDir(int d)
+    {
+        dir = d;
+        direction = dirArr[d];
+        moveForward();
+    }
+    
+    public void moveOutOfJail()
+    {
+        if (x < 390)
+        {
+            moveDir(0);
+        }
+        else if (x > 390)
+        {
+            moveDir(3);
+        }
+        else
+        {
+            moveDir(1);
+        }
+    }
+    
+    public void backToJail()
+    {
+        //TODO
+        x = 390;
+        y = 210;
+        
+        direction = "up";
+        Window.out.image( images.get( direction ), x , y );
+    }
+    
     /**
      * Identifies whether or not the ghost can move forward in the direction it's facing
      * @param direction The direction the ghost is heading in
@@ -363,7 +195,7 @@ public abstract class Ghost
      */
     private boolean canMove( String direction )
     {
-        if ( direction.equals( "right" ) && (x / 20) <= maze[0].length
+        if ( direction.equals( "right" ) && ( x + 20 ) / 20 + 1<= maze[0].length
                         && maze[( y - 10 ) / 20 + 1 ][( x + 20 ) / 20] != 1)
         {
             return true;
@@ -378,9 +210,9 @@ public abstract class Ghost
         {
             return true;
         }
-        else if ( direction.equals( "down" ) && ( y + 20) / 20 <= maze.length
+        else if ( direction.equals( "down" ) && ( y + 40) / 20 + 1 <= maze.length
             && maze[ ( y + 20 ) / 20][ ( x - 10 ) / 20 + 1 ] != 1 
-            && maze[ ( y + 20 ) / 20][ ( x - 10 ) / 20 + 1 ] != 4 )
+            && maze[ ( y + 20 ) / 20][ ( x - 10 ) / 20 + 1 ] != 4)
         {
             return true;
         }
@@ -411,19 +243,87 @@ public abstract class Ghost
     }
     
     /**
-     * Identifies whether or not the ghost is eaten by the pan.
-     * @return true if the ghost is touching the pan.
+     * The ghosts' movements when the pan eats the blue macaroni
      */
-    public boolean eaten()
+    public void frightenedMove()
     {
-        return pan.touchingGhost(this);
+        if (timer.isCounting() == false)
+        {
+            timer.start();
+            
+            dirReverse(dir);
+            
+            x += shiftXArr[dir];
+            y += shiftYArr[dir];
+            direction = dirArr[dir];
+            
+            Window.out.image( images.get( "edible" ), x , y );
+        }
+        else if (!pan.touchingGhost( this ) && timer.getSecond() <= 20)
+        {
+            int ghostS = timer.getSecond();
+            int ghostMS = timer.getMillisecond();
+            
+            int index = 0;
+            
+            if (!canMove(direction))
+            {
+                index = (int) (Math.random() * 4);
+                
+                while (!canMove(dirArr[index]))
+                {
+                    index = (int) (Math.random() * 4);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < dirArr.length; i++)
+                {
+                    if (dirArr[i].equals(direction))
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+            
+            x += shiftXArr[index];
+            y += shiftYArr[index];
+            direction = dirArr[index];
+            
+            if (ghostS <= 10 || (ghostS > 10 && ghostS % 2 == 1))
+            {
+                Window.out.image( images.get( "edible" ), x , y );
+            }
+            else if (ghostS > 10 && ghostS % 2 == 0)
+            {
+                Window.out.image( images.get( "revert" ), x , y );
+            }
+        }
+        else
+        {
+            if (pan.touchingGhost(this) && timer.getSecond() <= 25)
+            {
+                timer.stop();
+                timer.reset();
+                timer.start();
+                //eatenTimer.start();
+                frightened = false;
+                this.backToJail();
+            }
+            else
+            {
+                timer.stop();
+                timer.reset();
+                frightened = false;
+            }
+        }
+        
+        timer.count();
     }
     
-    public void backToJail()
+    public boolean isFrightened()
     {
-        x = 390;
-        y = 210;
-        direction = "up";
-        Window.out.image( images.get( direction ), x , y );
+        return frightened;
     }
 }
