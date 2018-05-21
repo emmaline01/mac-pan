@@ -138,7 +138,7 @@ public class MacPan
             }
             
             Window.out.color( "white" );
-            Window.out.print( "Macaroni eaten: " + numEaten, 630, 397 );
+            Window.out.print( "Macaroni eaten: " + numEaten, 600, 397 );
 
             p.move();
             
