@@ -89,5 +89,28 @@ public class Macaroni
     {
         return removed;
     }
+    
+    
+    /*
+     * FOR TESTING PURPOSES ONLY
+     */
+    
+    /**
+     * Accessor method for pan's x coordinate
+     * @return x coordinate of the pan
+     */
+    public int getX()
+    {
+        return x;
+    }
+
+    /**
+     * Accessor method for pan's y coordinate
+     * @return y coordinate of the pan
+     */
+    public int getY()
+    {
+        return y;
+    }
 
 }
