@@ -1,3 +1,6 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 public class JUMacPanTest
 {
@@ -68,19 +71,30 @@ public class JUMacPanTest
      *  isRemoved
      * 
      */
-    public void macaroniConstructor()
-    {
-        Macaroni mac = new Macaroni( maze , );
-        
-    }
     
 
     /*
      * Pan Tests:
-     * 
-     * 
-     * 
+     * Constructor
+     * move
+     * canMove
+     * touchingGhost
+     * touchingMacaroni
+     * touchingBlueMacaroni
+     * getX
+     * getY
+     * getDirection
      */
+    @Test
+    public void panConstructor() {
+        Pan p = new Pan(maze);
+        assertNotNull(p);
+    }
+    
+    @Test
+    public void panMove() {
+        
+    }
 
     /*
      * Pinky Tests:
