@@ -79,6 +79,10 @@ public class Macaroni
     }
 
 
+    /*
+     * FOR TESTING PURPOSES ONLY
+     */
+
     /**
      * The method isRemoved returns whether or not the Macaroni is removed (has
      * been eaten by the pan).
@@ -89,14 +93,11 @@ public class Macaroni
     {
         return removed;
     }
-    
-    
-    /*
-     * FOR TESTING PURPOSES ONLY
-     */
-    
+
+
     /**
      * Accessor method for pan's x coordinate
+     * 
      * @return x coordinate of the pan
      */
     public int getX()
@@ -104,8 +105,10 @@ public class Macaroni
         return x;
     }
 
+
     /**
      * Accessor method for pan's y coordinate
+     * 
      * @return y coordinate of the pan
      */
     public int getY()
