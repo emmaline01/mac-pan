@@ -44,10 +44,33 @@ public class JUMacPanTest
 
     /*
      * Counter Tests:
-     * 
-     * 
-     * 
+     * Constructor
+     * displayCounter
+     * setNumEaten
+     * getNumEaten
      */
+    @Test
+    public void counterConstructor()
+    {
+        Counter c = new Counter();
+        assertTrue( "<<counterConstructor Invalid>>", c.getNumEaten() == -1 );
+    }
+    
+    @Test
+    public void counterSetNumEaten()
+    {
+        Counter c = new Counter();
+        c.setNumEaten( 145 );
+        assertTrue( "<<counterSetNumEaten Invalid>>", c.getNumEaten() == 145 );
+    }
+    
+    @Test
+    public void counterGetNumEaten()
+    {
+        Counter c = new Counter();
+        c.setNumEaten( 432 );
+        assertTrue( "<<counterSetNumEaten Invalid>>", c.getNumEaten() == 432 );
+    }
 
     /*
      * Ghost Tests:
@@ -68,9 +91,31 @@ public class JUMacPanTest
      *  Constructor
      *  place
      *  remove
-     *  isRemoved
      * 
      */
+    @Test
+    public void macaroniConstructor() {
+        Macaroni mac = new Macaroni (maze, 20, 20);
+        assertNotNull(mac);
+    }
+    
+
+    @Test
+    public void macaroniPlace()
+    {
+        Macaroni mac = new Macaroni( maze, 20, 40 );
+        mac.place();
+        assertTrue( "<<macaroniPlace Invalid>>", mac.getX() == 20 && mac.getY() == 40 );
+    }
+    
+    @Test
+    public void macaroniRemove()
+    {
+        Macaroni mac = new Macaroni( maze, 20, 40 );
+        mac.place();
+        mac.remove();
+        assertTrue( "<<macaroniRemove Invalid>>", mac.isRemoved() == true );
+    }
     
 
     /*
