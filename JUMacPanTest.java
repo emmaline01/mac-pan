@@ -104,7 +104,6 @@ public class JUMacPanTest
     public void macaroniPlace()
     {
         Macaroni mac = new Macaroni( maze, 20, 40 );
-        mac.place();
         assertTrue( "<<macaroniPlace Invalid>>", mac.getX() == 20 && mac.getY() == 40 );
     }
     
@@ -112,10 +111,10 @@ public class JUMacPanTest
     public void macaroniRemove()
     {
         Macaroni mac = new Macaroni( maze, 20, 40 );
-        mac.place();
         mac.remove();
         assertTrue( "<<macaroniRemove Invalid>>", mac.isRemoved() == true );
     }
+
     
 
     /*
