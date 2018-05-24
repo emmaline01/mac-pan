@@ -18,13 +18,4 @@ public class BlueMacaroni extends Macaroni
         }
     }
 
-    public void place( int a, int b )
-    {
-        if ( removed != true )
-        {
-            Window.out.image( image, a * 20, b * 20 );
-            maze[b][a] = 5;
-        }
-    }
-
 }
