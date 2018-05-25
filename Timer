@@ -38,6 +38,11 @@ public class Timer
         return (millisecond >= targetTime);
     }
     
+    public int getMillisecond()
+    {
+        return millisecond;
+    }
+    
     public int getSecond()
     {
         return millisecond / 1400;
