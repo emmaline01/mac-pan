@@ -1,11 +1,12 @@
 public class Inky extends Ghost
 {
     Blinky blinky;
-    public Inky( int[][] m, Pan p , Blinky b, Timer t )
+    public Inky( int[][] m, Pan p , Blinky b )
     {
-        super( m, p, t );
+        super( m, p );
         setImages();
         blinky = b;
+        timer.start( 10 );
     }
 
     public void setImages()
@@ -20,24 +21,26 @@ public class Inky extends Ghost
     
     public void move()
     {
-        if (isInJail() && gameTimer.getSecond() <= 20)
+        if (isInJail() && getFrightened() == 0 && (!timer.isCounting() || timer.isTimeUp()))
         {
-            moveInJail();
-        }
-        else if (isInJail() && gameTimer.getSecond() > 20 && timer.getSecond() <= 5)
-        {
-            moveInJail();
-            timer.count();
-        }
-        else if (isInJail() && gameTimer.getSecond() > 20 && timer.getSecond() > 5)
-        {
+            moveOutOfJail();
             timer.reset();
-            timer.stop();
-            moveOutOfJail();
         }
-        else if (isInJail() && gameTimer.getSecond() > 20)
+        else if (isInJail() && getFrightened() == 0 && timer.isCounting())
         {
-            moveOutOfJail();
+            moveInJail();
+        }
+        else if (getFrightened() == 3)
+        {
+            initialFrightenedMove();
+        }
+        else if (getFrightened() == 1)
+        {
+            frightenedMove();
+        }
+        else if (getFrightened() == 2)
+        {
+            frightenedFlash();
         }
         else
         {
