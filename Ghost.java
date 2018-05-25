@@ -9,10 +9,8 @@ public abstract class Ghost
     protected String direction;
     protected TreeMap<String, String> images;
     protected Timer timer;
-    protected Timer gameTimer;
-    //protected Timer eatenTimer;
-    protected boolean frightened = false;
-    
+    protected Timer frightenedTimer;
+    private int frightened = 0;  // 0: not frightened, 1: blue, 2: blinking blue
     protected int dir;
     protected String[] dirArr = {"right", "up", "down", "left"};
     protected int[] oppDirIndex = { 3, 2, 1, 0 };
@@ -20,17 +18,14 @@ public abstract class Ghost
     protected int[] shiftXArr = {4, 0, 0, -4};
     protected int[] shiftYArr = {0, -4, 4, 0};
     
-    public Ghost(int[][] m, Pan p, Timer t)
+    public Ghost(int[][] m, Pan p)
     {
-        x = 390;
-        y = 210;
         maze = m;
         pan = p;
-        direction = "right";
-        dir = 0;
         images = new TreeMap<String, String>();
-        gameTimer = t;
         timer = new Timer();
+        frightenedTimer = new Timer();
+        initMove();
     }
     
     /**
@@ -108,15 +103,21 @@ public abstract class Ghost
             
         for (int i = 0; i < dirOrder.length; i++)
         {
-            dir = dirOrder[i];
-            direction = dirArr[dirOrder[i]];
+            changeDir(dirOrder[i]);
             
-            if ( canMove(direction) )
+            if ( canMove(direction, isInJail()) )
             {
                 moveForward();
                 break;
             }
         }
+    }
+    
+    public void initMove()
+    {
+        x = 380;
+        y = 200;
+        changeDir(0);
     }
     
     public void moveForward()
@@ -126,6 +127,7 @@ public abstract class Ghost
         direction = dirArr[dir];
         
         Window.out.image( images.get( direction ), x , y );
+        timer.count();
     }
     
     public void dirReverse(int d)
@@ -136,43 +138,51 @@ public abstract class Ghost
     
     public boolean isInJail()
     {
-        return (( maze[ ( y + 1 ) / 20][ ( x + 1 ) / 20 ] == 4 )
-                        || ( maze[ ( y + 1 ) / 20 ][ (x + 19) / 20] == 4 )
-                        || ( maze[(y + 19) / 20][(x + 1) / 20] == 4 )
-                        || ( maze[(y + 19) / 20][(x + 19) / 20] == 4 ));
+        return ( ( maze[y / 20][x / 20] == 4 ) ||
+                        ( maze[y / 20][(x + 19) / 20] == 4 ) ||
+                        ( maze[(y + 19) / 20][x / 20] == 4 ) ||
+                        ( maze[(y + 19) / 20][(x + 19) / 20] == 4 ) );
     }
     
     public void moveInJail()
     {
-        if (!canMove(direction))
+        if (!canMove(direction, isInJail()))
         {
             dirReverse(dir);
             moveForward();
+            timer.count();
         }
         else
         {
             moveForward();
+            timer.count();
         }
+    }
+    
+    public void changeDir(int d)
+    {
+        dir = d;
+        direction = dirArr[d];
     }
     
     public void moveDir(int d)
     {
-        dir = d;
-        direction = dirArr[d];
+        changeDir(d);
         moveForward();
     }
     
     public void moveOutOfJail()
     {
-        if (x < 390)
+        if (x < 388)
         {
             moveDir(0);
         }
-        else if (x > 390)
+        // else if (x > 390)
+        else if (x > 392)
         {
             moveDir(3);
         }
-        else
+        else // x == 388 || x == 392
         {
             moveDir(1);
         }
@@ -180,11 +190,7 @@ public abstract class Ghost
     
     public void backToJail()
     {
-        //TODO
-        x = 390;
-        y = 210;
-        
-        direction = "up";
+        initMove();
         Window.out.image( images.get( direction ), x , y );
     }
     
@@ -193,30 +199,43 @@ public abstract class Ghost
      * @param direction The direction the ghost is heading in
      * @return true if the ghost can continue moving
      */
-    private boolean canMove( String direction )
+    private boolean canMove( String direction, boolean inJail )
     {
-        if ( direction.equals( "right" ) && ( x + 20 ) / 20 + 1<= maze[0].length
-                        && maze[( y - 10 ) / 20 + 1 ][( x + 20 ) / 20] != 1)
+        int v1 = 0;
+        int v2 = 0;
+        
+        if ( direction.equals( "right" ) )
+        {
+            v1 = maze[y / 20][(x + 23) / 20];
+            v2 = maze[(y + 19) / 20][(x + 23) / 20];
+        }
+        else if ( direction.equals( "left" ) )
+        {
+            v1 = maze[y / 20][(x - 4) / 20];
+            v2 = maze[(y + 19) / 20][(x - 4) / 20];
+        }
+        else if ( direction.equals( "up" ) )
+        {
+            v1 = maze[(y - 4) / 20][x / 20];
+            v2 = maze[(y - 4) / 20][(x + 19) / 20];
+        }
+        else if ( direction.equals( "down" ) )
+        {
+            v1 = maze[(y + 23) / 20][x / 20];
+            v2 = maze[(y + 23) / 20][(x + 19) / 20];
+        }
+        
+        if ((v1 == 1) || (v2 == 1))
+        {
+            return false;
+        }
+        
+        if (inJail)
         {
             return true;
         }
-        else if ( direction.equals( "left" ) && (x / 20) >= 0
-            && maze[(y - 10 ) / 20 + 1][(x - 5) / 20] != 1)
-        {
-            return true;
-        }
-        else if ( direction.equals( "up" ) && ( y - 10 ) / 20 + 1 >= 0
-            && maze[( y - 5 ) / 20 ][( x - 10 ) / 20 + 1 ] != 1)
-        {
-            return true;
-        }
-        else if ( direction.equals( "down" ) && ( y + 40) / 20 + 1 <= maze.length
-            && maze[ ( y + 20 ) / 20][ ( x - 10 ) / 20 + 1 ] != 1 
-            && maze[ ( y + 20 ) / 20][ ( x - 10 ) / 20 + 1 ] != 4)
-        {
-            return true;
-        }
-        return false;
+        
+        return (v1 != 4) && (v2 != 4);
     }
     
     /**
@@ -242,35 +261,99 @@ public abstract class Ghost
         return timer;
     }
     
+    public void initialFrightenedMove()
+    {
+        // In the beginnning when the pan first eats the BlueMacaroni
+        //The ghost will move in the opposite direction
+        frightenedTimer.start(15);
+        
+        if (isInJail())
+        {
+            timer.saveTime();
+        }
+        
+        dirReverse(dir);
+        
+        setFrightened(1);
+        
+        x += shiftXArr[dir];
+        y += shiftYArr[dir];
+        direction = dirArr[dir];
+        
+        Window.out.image( images.get( "edible" ), x , y );
+    }
+    
     /**
      * The ghosts' movements when the pan eats the blue macaroni
      */
     public void frightenedMove()
     {
-        if (timer.isCounting() == false)
+        if (frightenedTimer.getSecond() <= 10)
         {
-            timer.start();
-            
-            dirReverse(dir);
-            
-            x += shiftXArr[dir];
-            y += shiftYArr[dir];
-            direction = dirArr[dir];
-            
-            Window.out.image( images.get( "edible" ), x , y );
+            // For 10 seconds after the pan eats the BlueMacaroni, the ghost will head in
+            // a random direction when 
+            if (!pan.touchingGhost( this ))
+            {
+                int index = 0;
+                
+                // If the ghost hits a wall, it will head in a random direction
+                if (!canMove(direction, isInJail()))
+                {
+                    index = (int) (Math.random() * 4);
+                    
+                    while (!canMove(dirArr[index], isInJail()))
+                    {
+                        index = (int) (Math.random() * 4);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < dirArr.length; i++)
+                    {
+                        if (dirArr[i].equals(direction))
+                        {
+                            index = i;
+                            break;
+                        }
+                    }
+                }
+                
+                x += shiftXArr[index];
+                y += shiftYArr[index];
+                direction = dirArr[index];
+                
+                Window.out.image( images.get( "edible" ), x , y );
+                
+                frightenedTimer.count();
+            }
+            else if (pan.touchingGhost(this) && !frightenedTimer.isTimeUp())
+            {
+                frightenedTimer.reset();
+                setFrightened(0);
+                this.backToJail();
+                timer.start( 5 );
+            }
         }
-        else if (!pan.touchingGhost( this ) && timer.getSecond() <= 20)
+        else
         {
-            int ghostS = timer.getSecond();
-            int ghostMS = timer.getMillisecond();
-            
+            setFrightened(2);
+        }
+    }
+    
+    public void frightenedFlash()
+    {
+        int ghostS = frightenedTimer.getSecond();
+        
+        if (!pan.touchingGhost( this ) && !frightenedTimer.isTimeUp())
+        {
             int index = 0;
             
-            if (!canMove(direction))
+            // If the ghost hits a wall, it will head in a random direction
+            if (!canMove(direction, isInJail()))
             {
                 index = (int) (Math.random() * 4);
                 
-                while (!canMove(dirArr[index]))
+                while (!canMove(dirArr[index], isInJail()))
                 {
                     index = (int) (Math.random() * 4);
                 }
@@ -291,39 +374,57 @@ public abstract class Ghost
             y += shiftYArr[index];
             direction = dirArr[index];
             
-            if (ghostS <= 10 || (ghostS > 10 && ghostS % 2 == 1))
+            if (ghostS % 2 == 1)
             {
                 Window.out.image( images.get( "edible" ), x , y );
+                frightenedTimer.count();
             }
-            else if (ghostS > 10 && ghostS % 2 == 0)
+            else if (ghostS % 2 == 0)
             {
                 Window.out.image( images.get( "revert" ), x , y );
+                frightenedTimer.count();
             }
         }
         else
         {
-            if (pan.touchingGhost(this) && timer.getSecond() <= 25)
+            if (pan.touchingGhost(this) && !frightenedTimer.isTimeUp())
             {
-                timer.stop();
-                timer.reset();
-                timer.start();
-                //eatenTimer.start();
-                frightened = false;
+                frightenedTimer.reset();
+                setFrightened(0);
                 this.backToJail();
+                timer.start( 5 );
+            }
+            else if (frightenedTimer.isTimeUp() && isInJail())
+            {
+                frightenedTimer.reset();
+                setFrightened(0);
+                timer.start( timer.getSavedTarget() );
             }
             else
             {
-                timer.stop();
-                timer.reset();
-                frightened = false;
+                frightenedTimer.reset();
+                setFrightened(0);
             }
         }
-        
-        timer.count();
+    }
+    
+    public int getFrightened()
+    {
+        return frightened;
+    }
+    
+    public void setFrightened(int value)
+    {
+        frightened = value;
     }
     
     public boolean isFrightened()
     {
-        return frightened;
+        return frightened == 1 || frightened == 2 || frightened == 3;
+    }
+    
+    public boolean isEaten()
+    {
+        return pan.touchingGhost( this ) && isFrightened();
     }
 }
