@@ -1,17 +1,12 @@
-import java.util.TreeMap;
-
-import apcs.Window;
-
-
 public class Blinky extends Ghost
 {
 
-    public Blinky( int[][] m, Pan p, Timer t )
+    public Blinky( int[][] m, Pan p )
     {
-        super( m, p, t );
-        dir = 3;
-        direction = "left";
+        super( m, p );
+        changeDir(3);
         setImages();
+        timer.start( 5 );
     }
 
     public void setImages()
@@ -26,24 +21,26 @@ public class Blinky extends Ghost
     
     public void move()
     {
-        if (isInJail() && gameTimer.getSecond() <= 10)
+        if (isInJail() && getFrightened() == 0 && (!timer.isCounting() || timer.isTimeUp()))
         {
-            moveInJail();
-        }
-        else if (isInJail() && gameTimer.getSecond() > 10 && timer.getSecond() <= 5)
-        {
-            moveInJail();
-            timer.count();
-        }
-        else if (isInJail() && gameTimer.getSecond() > 10 && timer.getSecond() > 5)
-        {
+            moveOutOfJail();
             timer.reset();
-            timer.stop();
-            moveOutOfJail();
         }
-        else if (isInJail() && gameTimer.getSecond() > 10)
+        else if (isInJail() && getFrightened() == 0 && !timer.isTimeUp())
         {
-            moveOutOfJail();
+            moveInJail();
+        }
+        else if (getFrightened() == 3)
+        {
+            initialFrightenedMove();
+        }
+        else if (getFrightened() == 1)
+        {
+            frightenedMove();
+        }
+        else if (getFrightened() == 2)
+        {
+            frightenedFlash();
         }
         else
         {
