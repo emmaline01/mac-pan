@@ -155,13 +155,6 @@ public class JUMacPanTest
      */
 
     /*
-     * Sound Tests:
-     * 
-     * 
-     * 
-     */
-
-    /*
      * Timer Tests:
      * 
      * 
