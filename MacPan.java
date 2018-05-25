@@ -151,7 +151,7 @@ public class MacPan
                 {
                     if (g.isEaten())
                     {
-                        c.setNumEaten( c.getNumEaten() + 2 );
+                        c.setNumEaten( c.getNumEaten() + 5 );
                     }
                 }
             }
