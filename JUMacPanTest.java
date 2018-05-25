@@ -38,7 +38,6 @@ public class JUMacPanTest
      /*
      * BlueMacaroni Tests:
      * constructor
-     * 
      */
 
     @Test
