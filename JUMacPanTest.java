@@ -35,12 +35,20 @@ public class JUMacPanTest
      * 
      */
 
-    /*
+     /*
      * BlueMacaroni Tests:
-     * 
-     * 
+     * constructor
      * 
      */
+
+    @Test
+    public void blueMacaroniConstructor()
+    {
+        Macaroni bm = new BlueMacaroni( maze, 40, 20 );
+        assertNotNull( bm );
+        assertTrue( "<<blueMacaroniConstructor Invalid>>", bm.getX() == 40 
+                        && bm.getY() == 20 );
+    }
 
     /*
      * Counter Tests:
