@@ -6,25 +6,41 @@ import java.io.InputStream;
 import sun.audio.*;
 
 
+/**
+ * 
+ * The Sound class plays music in the background of the game. It loads the music
+ * from a sound file.
+ *
+ * @author Emmaline Mai, Shannon Liu, Anubha Kale
+ * @version May 24, 2018
+ * @author Period: 5
+ * @author Assignment: MacPan
+ *
+ */
+
 public class Sound
 {
 
+    /**
+     * 
+     * Sound's move method plays music from a file.
+     */
     public void music()
     {
-        AudioPlayer player = AudioPlayer.player; // background player
+//        AudioPlayer player = AudioPlayer.player; // background player
         AudioStream stream; // background music
-//        AudioData data;
+        // AudioData data;
         InputStream input = null;
 
-        ContinuousAudioDataStream loop = null;
+//        ContinuousAudioDataStream loop = null;
 
         try
         {
-            input = new FileInputStream("Mii-Channel-Music.wav");
-            stream = new AudioStream(input );
-            AudioPlayer.player.start(stream);
-//            data = stream.getData();
-//            loop = new ContinuousAudioDataStream( data );
+            input = new FileInputStream( "Mii-Channel-Music.wav" );
+            stream = new AudioStream( input );
+            AudioPlayer.player.start( stream );
+            // data = stream.getData();
+            // loop = new ContinuousAudioDataStream( data );
         }
         catch ( FileNotFoundException e )
         {
@@ -37,7 +53,7 @@ public class Sound
             e.printStackTrace();
         }
 
-        player.start( loop );
+//        player.start( loop );
 
     }
 
