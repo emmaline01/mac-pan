@@ -54,6 +54,7 @@ public class MacPan
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}, //19 
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //20
         };
+        
         Sound sound = new Sound();
         sound.music();
         
@@ -62,10 +63,9 @@ public class MacPan
         
         ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
         
-        Timer timer = new Timer();
-        Pinky pinky = new Pinky (maze, p, timer ); //pink
-        Blinky blinky = new Blinky (maze, p, timer ); //red
-        Inky inky = new Inky (maze, p , blinky, timer ); //blue
+        Pinky pinky = new Pinky (maze, p ); //pink
+        Blinky blinky = new Blinky (maze, p ); //red
+        Inky inky = new Inky (maze, p , blinky ); //blue
         
         ghosts.add( pinky );
         ghosts.add( blinky );
@@ -117,19 +117,13 @@ public class MacPan
                         map.get( y * 100 + x ).remove();
                         map.remove( y * 100 + x  );
                         touchedBlueMac = true;
-                        timer.saveTime();
-                        for (Ghost ghost : ghosts)
-                        {
-                            ghost.frightened = true;
-                        }
                     }
                 }
             }
             
             if ( map.isEmpty() )
             {
-                System.out.println("mapisempty");
-                break;
+                break; // end game
             }
             
             for ( Integer i : map.keySet() )
@@ -137,89 +131,39 @@ public class MacPan
                 map.get( i ).place();
             }
             
-            c.displayCounter();
             p.move();
             
-            if (touchedBlueMac == true && pinky.timer.getMillisecond() == 0)
+            if (touchedBlueMac == true)
             {
-                pinky.frightenedMove();
-                blinky.frightenedMove();
-                inky.frightenedMove();
-                
-                if (p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
-                                || p.touchingGhost( blinky ))
-                {
-                    c.setNumEaten( c.getNumEaten() + 2);
-                }
-            }
-            else if (touchedBlueMac == true && !pinky.isFrightened() 
-                            && !blinky.isFrightened() && !inky.isFrightened())
-            {
+                pinky.setFrightened( 3 );
+                blinky.setFrightened( 3 );
+                inky.setFrightened( 3 );
                 touchedBlueMac = false;
-                pinky.move(); //pink ghost
-                blinky.move(); //red ghost
-                inky.move(); //blue ghost
             }
-            else if (touchedBlueMac == true && (pinky.isFrightened() 
-                            || blinky.isFrightened() || inky.isFrightened()))
+            
+            pinky.move();
+            blinky.move();
+            inky.move();
+            
+            if (pinky.isEaten() || blinky.isEaten() || inky.isEaten())
             {
-                if (pinky.isFrightened())
+                for (Ghost g : ghosts)
                 {
-                    pinky.frightenedMove();
-                }
-                else
-                {
-                    pinky.move();
-                    if (p.touchingGhost( pinky ))
+                    if (g.isEaten())
                     {
-                        System.out.println("ghost death");
-                        break; //end game
+                        c.setNumEaten( c.getNumEaten() + 2 );
                     }
-                }
-                
-                if (blinky.isFrightened())
-                {
-                    blinky.frightenedMove();
-                }
-                else
-                {
-                    blinky.move();
-                    if (p.touchingGhost( blinky ))
-                    {
-                        System.out.println("ghost death");
-                        break; //end game
-                    }
-                }
-                
-                if (inky.isFrightened())
-                {
-                    inky.frightenedMove();
-                }
-                else
-                {
-                    inky.move();
-                    if (p.touchingGhost(inky))
-                    {
-                        System.out.println("ghost death");
-                        break; //end game
-                    }
-                }
-            }
-            else
-            {
-                pinky.move(); //pink ghost
-                blinky.move(); //red ghost
-                inky.move(); //blue ghost
-                
-                if ( p.touchingGhost( pinky ) || p.touchingGhost( inky ) 
-                                || p.touchingGhost( blinky )) 
-                {
-                    System.out.println("ghost death");
-                    break; //end game
                 }
             }
             
-            timer.count();
+            c.displayCounter();
+            
+            if ( (p.touchingGhost( pinky ) && !pinky.isFrightened()) 
+                            || (p.touchingGhost( blinky ) && !blinky.isFrightened())
+                            || (p.touchingGhost( inky ) && !inky.isFrightened())) 
+            {
+                break; //end game
+            }
         }
         
         while ( true )
