@@ -1,14 +1,9 @@
-import java.util.TreeMap;
-
-import apcs.Window;
-
-
 public class Pinky extends Ghost
 {
 
-    public Pinky( int[][] m, Pan p, Timer t )
+    public Pinky( int[][] m, Pan p )
     {
-        super( m, p, t );
+        super( m, p );
         setImages();
     }
 
@@ -24,20 +19,26 @@ public class Pinky extends Ghost
     
     public void move()
     {
-        if (isInJail() && gameTimer.getSecond() < 5)
+        if (isInJail() && getFrightened() == 0 && (!timer.isCounting() || timer.isTimeUp()))
         {
             moveOutOfJail();
+            timer.reset();
         }
-        else if (isInJail() && timer.getSecond() <= 5)
+        else if (isInJail() && getFrightened() == 0 && timer.isCounting())
         {
             moveInJail();
-            timer.count();
         }
-        else if (isInJail() && timer.getSecond() > 5)
+        else if (getFrightened() == 3)
         {
-            timer.reset();
-            timer.stop();
-            moveOutOfJail();
+            initialFrightenedMove();
+        }
+        else if (getFrightened() == 1)
+        {
+            frightenedMove();
+        }
+        else if (getFrightened() == 2)
+        {
+            frightenedFlash();
         }
         else
         {
