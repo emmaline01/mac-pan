@@ -1,53 +1,57 @@
 
 public class Timer
 {
-    private double millisecond;
-    private int stamp;
-    private boolean counting = false;
+    private int millisecond;
+    private int targetTime;
+    private int savedTarget;
+    private boolean counting;
     
     public Timer()
     {
-        millisecond = 0;
+        reset();
     }
     
     public void count()
     {
-        millisecond += 50;
+        if (targetTime > 0) // counting
+        {
+            millisecond += 30;
+        }
+    }
+
+    public void reset()
+    {
+        millisecond = 0;
+        targetTime = 0;
+        counting = false;
     }
     
-    public int getMillisecond()
+    // start timer with target seconds
+    public void start(int target)
     {
-        return (int) millisecond;
+        targetTime = target * 1400;
+        counting = true;
+    }
+
+    public boolean isTimeUp()
+    {
+        return (millisecond >= targetTime);
     }
     
     public int getSecond()
     {
-        return (int) millisecond / 1000;
-    }
-    
-    public void reset()
-    {
-        millisecond = 0;
+        return millisecond / 1400;
     }
     
     public void saveTime()
     {
-        stamp = getSecond();
-    }
-    
-    public int getSavedTime()
-    {
-        return stamp;
-    }
-    
-    public void start()
-    {
-        counting = true;
-    }
-    
-    public void stop()
-    {
+        savedTarget = targetTime / 1400;
         counting = false;
+    }
+    
+    public int getSavedTarget()
+    {
+        return savedTarget;
     }
     
     public boolean isCounting()
