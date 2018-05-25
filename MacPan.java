@@ -3,6 +3,18 @@ import java.util.ArrayList;
 
 import apcs.Window;
 
+/**
+ * 
+ *  The MacPan class runs the game. It sets up the maze and the game window, creates all the
+ *  game elements, and has the loop that the game runs in. 
+ *
+ *  @author  Emmaline Mai, Shannon Liu, Anubha Kale
+ *  @version May 24, 2018
+ *  @author  Period: 5
+ *  @author  Assignment: MacPan
+ *
+ */
+
 
 public class MacPan
 {
@@ -58,7 +70,7 @@ public class MacPan
         Sound sound = new Sound();
         sound.music();
         
-        Counter c = new Counter();
+        Counter counter = new Counter();
         Pan p = new Pan( maze );
         
         ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
@@ -106,14 +118,14 @@ public class MacPan
                     }
                     if ( p.touchingMacaroni( y, x ) )
                     {
-                        c.setNumEaten( c.getNumEaten() + 1);
+                        counter.setNumEaten( counter.getNumEaten() + 1);
                         map.get( y * 100 + x ).remove();
                         map.remove( y * 100 + x  );
 
                     }
                     if (p.touchingBlueMacaroni( y, x ))
                     {
-                        c.setNumEaten( c.getNumEaten() + 1);
+                        counter.setNumEaten( counter.getNumEaten() + 1);
                         map.get( y * 100 + x ).remove();
                         map.remove( y * 100 + x  );
                         touchedBlueMac = true;
@@ -151,12 +163,12 @@ public class MacPan
                 {
                     if (g.isEaten())
                     {
-                        c.setNumEaten( c.getNumEaten() + 5 );
+                        counter.setNumEaten( counter.getNumEaten() + 5 );
                     }
                 }
             }
             
-            c.displayCounter();
+            counter.displayCounter();
             
             if ( (p.touchingGhost( pinky ) && !pinky.isFrightened()) 
                             || (p.touchingGhost( blinky ) && !blinky.isFrightened())
