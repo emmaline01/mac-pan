@@ -1,3 +1,5 @@
+import java.util.TreeMap;
+
 import apcs.Window;
 
 
@@ -25,7 +27,7 @@ public class Pan
     private String direction;
 
     private Timer t;
-    
+
     private String next;
 
 
@@ -41,7 +43,7 @@ public class Pan
         y = 360;
         maze = m;
         direction = "";
-        
+
         t = new Timer();
         next = "";
     }
@@ -54,152 +56,87 @@ public class Pan
      */
     public void move()
     {
-        if (t.isCounting()) {
+        String[] dir = { "up", "down", "left", "right" };
+        TreeMap<String, Integer> movement = new TreeMap<String, Integer>();
+        movement.put( "up", new Integer( -5 ) );
+        movement.put( "down", new Integer( 5 ) );
+        movement.put( "right", new Integer( 5 ) );
+        movement.put( "left", new Integer( -5 ) );
+        boolean moved = false;
+
+        if ( t.isCounting() )
+        {
             t.count();
         }
 
-        if ( Window.key.pressed( "right" ) )
+        for ( String d : dir )
         {
-            if ( canMove( "right" ) )
+            if ( Window.key.pressed( d ) )
             {
-                x = x + 5;
-                direction = "right";
-            }
-            else
-            {
-                if ( t.isCounting() )
+                if ( canMove( d ) )
                 {
-                    t.reset();
+                    direction = d;
+                    if ( d.equals( "right" ) || d.equals( "left" ) )
+                    {
+                        x = x + movement.get( d );
+                    }
+                    else
+                    {
+                        y = y + movement.get( d );
+                    }
+                    moved = true;
                 }
-                next = "right";
-                t.count();
+                else
+                {
+                    if ( t.isCounting() )
+                    {
+                        t.reset();
+                    }
+                    next = d;
+                    t.start( 1 );
+                }
             }
         }
-        else if ( Window.key.pressed( "left" ) )
+
+        // check if it can turn any time soon
+        if ( t.isCounting() && t.getMillisecond() < 500 )
         {
-            if ( canMove( "left" ) )
+            if ( canMove( next ) )
             {
-                x = x - 5;
-                direction = "left";
-            }
-            else
-            {
-                if ( t.isCounting() )
+                direction = next;
+                if ( next.equals( "right" ) || next.equals( "left" ) )
                 {
-                    t.reset();
+                    x = x + movement.get( next );
                 }
-                next = "left";
-                t.count();
-            }
-        }
-        else if ( Window.key.pressed( "up" ) )
-        {
-            if ( canMove( "up" ) )
-            {
-                y = y - 5;
-                direction = "up";
-            }
-            else
-            {
-                if ( t.isCounting() )
+                else
                 {
-                    t.reset();
+                    y = y + movement.get( next );
                 }
-                next = "up";
-                t.count();
-            }
-        }
-        else if ( Window.key.pressed( "down" ) )
-        {
-            if ( canMove( "down" ) )
-            {
-                y = y + 5;
-                direction = "down";
-            }
-            else
-            {
-                if ( t.isCounting() )
-                {
-                    t.reset();
-                }
-                next = "down";
-                t.count();
-            }
-        }
-        else
-        {
-            // check if it can turn anytime soon
-            if ( t.getMillisecond() < 500 )
-            {
-                if ( next.equals( "right" ) )
-                {
-                    if ( canMove( "right" ) )
-                    {
-                        x = x + 5;
-                        direction = "right";
-                        next = "";
-                    }
-                }
-                else if ( next.equals( "left" ) )
-                {
-                    if ( canMove( "left" ) )
-                    {
-                        x = x - 5;
-                        direction = "left";
-                        next = "";
-                    }
-                }
-                else if ( next.equals( "up" ) )
-                {
-                    if ( canMove( "up" ) )
-                    {
-                        y = y - 5;
-                        direction = "up";
-                        next = "";
-                    }
-                }
-                else if ( next.equals( "down" ) )
-                {
-                    if ( canMove( "down" ) )
-                    {
-                        y = y + 5;
-                        direction = "down";
-                        next = "";
-                    }
-                }
-            }
-            else
-            {
+                next = "";
                 t.reset();
             }
+        }
 
-            // keep going in the same direction
-            if ( direction.equals( "right" ) )
+        else
+        {
+            t.reset();
+        }
+
+        // keep going in the same direction
+        if ( moved == false )
+        {
+            for ( String d : dir )
             {
-                if ( canMove( "right" ) )
+                if ( direction.equals( d ) && canMove( d ) )
                 {
-                    x = x + 5;
-                }
-            }
-            else if ( direction.equals( "left" ) )
-            {
-                if ( canMove( "left" ) )
-                {
-                    x = x - 5;
-                }
-            }
-            else if ( direction.equals( "up" ) )
-            {
-                if ( canMove( "up" ) )
-                {
-                    y = y - 5;
-                }
-            }
-            else if ( direction.equals( "down" ) )
-            {
-                if ( canMove( "down" ) )
-                {
-                    y = y + 5;
+                    if ( d.equals( "right" ) || d.equals( "left" ) )
+                    {
+                        x = x + movement.get( d );
+                    }
+                    else
+                    {
+                        y = y + movement.get( d );
+                    }
                 }
             }
         }
@@ -338,5 +275,49 @@ public class Pan
     public String getDirection()
     {
         return direction;
+    }
+
+
+    // methods for testing
+
+    /**
+     * 
+     * Setter method for direction.
+     */
+    public void setDirection( String s )
+    {
+        direction = s;
+    }
+
+
+    /**
+     * 
+     * Setter method for the x coordinate.
+     * 
+     * @param i
+     *            is the new x coordinate
+     */
+    public void setX( int i )
+    {
+        x = i;
+    }
+
+
+    /**
+     * 
+     * Setter method for the y coordinate.
+     * 
+     * @param i
+     *            is the new y coordinate
+     */
+    public void setY( int i )
+    {
+        y = i;
+    }
+
+
+    public boolean canMoveTest( String s )
+    {
+        return canMove( s );
     }
 }
