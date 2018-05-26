@@ -17,35 +17,6 @@ public class Pinky extends Ghost
         images.put( "revert", "RevertingBackGhost.png" );
     }
     
-    public void move()
-    {
-        if (isInJail() && getFrightened() == 0 && (!timer.isCounting() || timer.isTimeUp()))
-        {
-            moveOutOfJail();
-            timer.reset();
-        }
-        else if (isInJail() && getFrightened() == 0 && timer.isCounting())
-        {
-            moveInJail();
-        }
-        else if (getFrightened() == 3)
-        {
-            initialFrightenedMove();
-        }
-        else if (getFrightened() == 1)
-        {
-            frightenedMove();
-        }
-        else if (getFrightened() == 2)
-        {
-            frightenedFlash();
-        }
-        else
-        {
-            super.move();
-        }
-    }
-    
     public int targetX()
     {
         int panX = pan.getX();
