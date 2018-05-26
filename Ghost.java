@@ -1,6 +1,18 @@
 import java.util.TreeMap;
 import apcs.Window;
 
+/**
+ *  TODO Write a one-sentence summary of your class here.
+ *  TODO Follow it with additional details about its purpose, what abstraction
+ *  it represents, and how to use it.
+ *
+ *  @author Emmaline Mai, Shannon Liu, Anubha Kale
+ *  @version May 26, 2018
+ *  @author  Period: 5
+ *  @author  Assignment: MacPan
+ *
+ *  @author  Sources: n/a
+ */
 public abstract class Ghost
 {
     protected int x, y;
@@ -10,7 +22,8 @@ public abstract class Ghost
     protected TreeMap<String, String> images;
     protected Timer timer;
     protected Timer frightenedTimer;
-    private int frightened = 0;  // 0: not frightened, 1: blue, 2: blinking blue
+    private int frightened = 0;  // 0: not frightened, 1: blue, 2: blinking blue, 3: initial frightened
+    
     protected int dir;
     protected String[] dirArr = {"right", "up", "down", "left"};
     protected int[] oppDirIndex = { 3, 2, 1, 0 };
@@ -18,6 +31,11 @@ public abstract class Ghost
     protected int[] shiftXArr = {4, 0, 0, -4};
     protected int[] shiftYArr = {0, -4, 4, 0};
     
+    /**
+     * Constructor of the Ghost class
+     * @param m maze
+     * @param p pan
+     */
     public Ghost(int[][] m, Pan p)
     {
         maze = m;
@@ -46,73 +64,9 @@ public abstract class Ghost
     public abstract int targetY();
     
     /**
-     * Move to specified coordinates.
+     * Places ghost on the default coordinate (380, 200)
+     * Sets the direction of the ghost to the right.
      */
-    public void move()
-    {
-        int targetX = targetX();
-        int targetY = targetY();
-
-        // Find how far each current coordinate value is to the target coordinate values
-        int diffX = targetX - x;
-        int diffY = targetY - y;
-
-        int[] dirOrder = new int[4];
-        if (diffX >= Math.abs( diffY ))
-        {
-            dirOrder[0] = 0; // right
-        }
-        else if (diffX <= -Math.abs( diffY ))
-        {
-            dirOrder[0] = 3; // left
-        }
-        else if (diffY >= Math.abs( diffX ))
-        {
-            dirOrder[0] = 2; // down
-        }
-        else
-        {
-            dirOrder[0] = 1; // up
-        }
-            
-        if (dirOrder[0] == 0 || dirOrder[0] == 3)
-        {
-            if (diffY >= 0)
-            {
-                dirOrder[1] = 2; // down
-            }
-            else
-            {
-                dirOrder[1] = 1; // up
-            }
-        }
-        else
-        {
-            if (diffX >= 0)
-            {
-                dirOrder[1] = 0; // right
-            }
-            else
-            {
-                dirOrder[1] = 3; // left
-            }
-        }
-            
-        dirOrder[2] = oppDirIndex[ dirOrder[0] ];
-        dirOrder[3] = oppDirIndex[ dirOrder[1] ];
-            
-        for (int i = 0; i < dirOrder.length; i++)
-        {
-            changeDir(dirOrder[i]);
-            
-            if ( canMove(direction, isInJail()) )
-            {
-                moveForward();
-                break;
-            }
-        }
-    }
-    
     public void initMove()
     {
         x = 380;
@@ -120,6 +74,9 @@ public abstract class Ghost
         changeDir(0);
     }
     
+    /**
+     * Change the coordinates according the direction it will head in and displays the image.
+     */
     public void moveForward()
     {
         x += shiftXArr[dir];
@@ -130,12 +87,22 @@ public abstract class Ghost
         timer.count();
     }
     
+    /**
+     * Reverses the direction the ghost heads in.
+     * If it was heading right, it will head left and vice versa.
+     * If it was heading up, it will head down and vice versa.
+     * @param d The direction the ghost was heading in initially
+     */
     public void dirReverse(int d)
     {
         dir = oppDirIndex[d];
         direction = dirArr[dir];
     }
     
+    /**
+     * Determines whether or not the ghost is currently in the jail
+     * @return true if the ghost is in jail
+     */
     public boolean isInJail()
     {
         return ( ( maze[y / 20][x / 20] == 4 ) ||
@@ -144,6 +111,9 @@ public abstract class Ghost
                         ( maze[(y + 19) / 20][(x + 19) / 20] == 4 ) );
     }
     
+    /**
+     * The ghost will move horizontally until it hits the wall, reverses its direction, and repeat.
+     */
     public void moveInJail()
     {
         if (!canMove(direction, isInJail()))
@@ -159,18 +129,29 @@ public abstract class Ghost
         }
     }
     
+    /**
+     * Change the direction the ghost is heading in to a given direction.
+     * @param d The index of the direction the ghost will head in.
+     */
     public void changeDir(int d)
     {
         dir = d;
         direction = dirArr[d];
     }
     
+    /**
+     * Move in the direction that is specified.
+     * @param d Index of the direction.
+     */
     public void moveDir(int d)
     {
         changeDir(d);
         moveForward();
     }
     
+    /**
+     * Move to the center and move out of the jail.
+     */
     public void moveOutOfJail()
     {
         if (x < 388)
@@ -192,6 +173,98 @@ public abstract class Ghost
     {
         initMove();
         Window.out.image( images.get( direction ), x , y );
+    }
+    
+    /**
+     * Move to target coordinates that is calculated in the subclass.
+     */
+    public void move()
+    {
+        if (isInJail() && getFrightened() == 0 && (!timer.isCounting() || timer.isTimeUp()))
+        {
+            moveOutOfJail();
+            timer.reset();
+        }
+        else if (isInJail() && getFrightened() == 0 && timer.isCounting())
+        {
+            moveInJail();
+        }
+        else if (getFrightened() == 3)
+        {
+            initialFrightenedMove();
+        }
+        else if (getFrightened() == 1)
+        {
+            frightenedMove();
+        }
+        else if (getFrightened() == 2)
+        {
+            frightenedFlash();
+        }
+        else
+        {
+            int targetX = targetX();
+            int targetY = targetY();
+
+            // Find how far each current coordinate value is to the target coordinate values
+            int diffX = targetX - x;
+            int diffY = targetY - y;
+
+            int[] dirOrder = new int[4];
+            if (diffX >= Math.abs( diffY ))
+            {
+                dirOrder[0] = 0; // right
+            }
+            else if (diffX <= -Math.abs( diffY ))
+            {
+                dirOrder[0] = 3; // left
+            }
+            else if (diffY >= Math.abs( diffX ))
+            {
+                dirOrder[0] = 2; // down
+            }
+            else
+            {
+                dirOrder[0] = 1; // up
+            }
+                
+            if (dirOrder[0] == 0 || dirOrder[0] == 3)
+            {
+                if (diffY >= 0)
+                {
+                    dirOrder[1] = 2; // down
+                }
+                else
+                {
+                    dirOrder[1] = 1; // up
+                }
+            }
+            else
+            {
+                if (diffX >= 0)
+                {
+                    dirOrder[1] = 0; // right
+                }
+                else
+                {
+                    dirOrder[1] = 3; // left
+                }
+            }
+                
+            dirOrder[2] = oppDirIndex[ dirOrder[0] ];
+            dirOrder[3] = oppDirIndex[ dirOrder[1] ];
+                
+            for (int i = 0; i < dirOrder.length; i++)
+            {
+                changeDir(dirOrder[i]);
+                
+                if ( canMove(direction, isInJail()) )
+                {
+                    moveForward();
+                    break;
+                }
+            }
+        }
     }
     
     /**
@@ -236,24 +309,6 @@ public abstract class Ghost
         }
         
         return (v1 != 4) && (v2 != 4);
-    }
-    
-    /**
-     * Returns the x-coordinate of the ghost
-     * @return current x-coordinate of the ghost
-     */
-    public int getX()
-    {
-        return x;
-    }
-    
-    /**
-     * Returns the y-coordinate of the ghost
-     * @return current y-coordinate of the ghost
-     */
-    public int getY()
-    {
-        return y;
     }
     
     public Timer getTimer()
@@ -426,5 +481,52 @@ public abstract class Ghost
     public boolean isEaten()
     {
         return pan.touchingGhost( this ) && isFrightened();
+    }
+    
+    
+    /*************************  METHODS FOR TESTING  *****************************/
+    
+    /**
+     * Sets the x value to the given number
+     */
+    public void setX(int n)
+    {
+        x = n;
+    }
+    
+    /**
+     * Sets the y value to the given number
+     */
+    public void setY(int n)
+    {
+        y = n;
+    }
+    
+    /**
+     * Returns the x-coordinate of the ghost
+     * @return current x-coordinate of the ghost
+     */
+    public int getX()
+    {
+        return x;
+    }
+    
+    /**
+     * Returns the y-coordinate of the ghost
+     * @return current y-coordinate of the ghost
+     */
+    public int getY()
+    {
+        return y;
+    }
+    
+    public int getDir()
+    {
+        return dir;
+    }
+    
+    public String getDirection()
+    {
+        return direction;
     }
 }
