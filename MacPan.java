@@ -15,10 +15,9 @@ import apcs.Window;
  *
  */
 
-
 public class MacPan
 {
-
+    
     public static void main( String[] args )
     {
         Window.size( 800, 400 );
@@ -186,7 +185,10 @@ public class MacPan
                 Window.out.color( "black" );
                 Window.out.rectangle( 1, 1, 1600, 800 );
                 Window.out.color( "green" );
-                Window.out.print( "   Y  O  U    W  O  N  !" , 320, 190 );
+                Window.out.fontSize( 40 );
+                Window.out.print( "   Y  O  U    W  O  N  !" , 210, 170 );
+                Window.out.fontSize( 30 );
+                Window.out.print( "Score: " + counter.getNumEaten(), 340, 240);
             }
             else
             {
@@ -194,7 +196,10 @@ public class MacPan
                 Window.out.color( "black" );
                 Window.out.rectangle( 1, 1, 1600, 800 );
                 Window.out.color( "red" );
-                Window.out.print( "G  A  M  E    O  V  E  R" , 320, 190 );
+                Window.out.fontSize( 40 );
+                Window.out.print( "G  A  M  E    O  V  E  R" , 220, 170 );
+                Window.out.fontSize( 30 );
+                Window.out.print( "Score: " + counter.getNumEaten(), 350, 240);
             }
             
         }
