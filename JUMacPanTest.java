@@ -113,10 +113,76 @@ public class JUMacPanTest
 
     /*
      * Inky Tests:
-     * 
-     * 
-     * 
+     * constructor
+     * targetX
+     * targetY
      */
+    @Test
+    public void inkyConstructor()
+    {
+        Pan pan = new Pan( maze );
+        Blinky blinky = new Blinky( maze, pan );
+        Inky inky = new Inky( maze, pan, blinky );
+        assertNotNull( inky );
+    }
+
+
+    @Test
+    public void inkyTargetX()
+    {
+        Pan pan = new Pan( maze );
+        Blinky blinky = new Blinky( maze, pan );
+        Inky inky = new Inky( maze, pan, blinky );
+        pan.setDirection( "up" );
+        assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() );
+        pan.setDirection( "down" );
+        assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() );
+        int dist = 2 * Math.abs( pan.getX() - blinky.getX() );
+        pan.setDirection( "right" );
+        assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() + dist );
+        pan.setDirection( "left" );
+        assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() - dist );
+        pan.setX( 20 );
+        assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() );
+        pan.setDirection( "right" ); 
+        pan.setX( 780 );
+        assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() );
+        pan.setDirection( "invalid" );
+        assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == 0 );
+    }
+
+
+    @Test
+    public void inkyTargetY()
+    {
+        Pan pan = new Pan( maze );
+        Blinky blinky = new Blinky( maze, pan );
+        Inky inky = new Inky( maze, pan, blinky );
+        pan.setX( 100 );
+        pan.setY( 380 );
+        blinky.setX( 100 );
+        blinky.setY( 380 );
+        pan.setDirection( "right" );
+        assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() );
+        pan.setDirection( "left" );
+        assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() );
+        int dist = 2 * Math.abs( pan.getY() - blinky.getY() );
+        pan.setDirection( "down" );
+        assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() + dist );
+        pan.setDirection( "up" );
+        assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() - dist );
+        pan.setY( 20 );
+        assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() );
+        pan.setDirection( "down" ); 
+        pan.setX( 100 );
+        pan.setY( 380 );
+        blinky.setX( 200 );
+        blinky.setY( 360 );
+        assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() );
+        pan.setDirection( "invalid" );
+        System.out.println(inky.targetY() + " " + pan.getY());
+        assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == 0 );
+    }
 
     /*
      * Macaroni Tests:
@@ -147,7 +213,7 @@ public class JUMacPanTest
         assertTrue( "<<macaroniRemove Invalid>>", mac.isRemoved() == true );
     }
 
-    
+
 
     /*
      * Pan Tests:
@@ -174,10 +240,49 @@ public class JUMacPanTest
 
     /*
      * Pinky Tests:
-     * 
-     * 
-     * 
+     * constructor
+     * targetX
+     * targetY
      */
+    @Test
+    public void pinkyConstructor()
+    {
+        Pan pan = new Pan( maze );
+        Pinky pinky = new Pinky( maze, pan );
+        assertNotNull( pinky );
+    }
+
+
+    @Test
+    public void pinkyTargetX()
+    {
+        Pan pan = new Pan( maze );
+        Pinky pinky = new Pinky( maze, pan );
+        pan.setDirection( "left" );
+        assertTrue( "<<pinkyTargetX Invalid>>", pinky.targetX() == pan.getX() - 20 );
+        pan.setDirection( "right" );
+        assertTrue( "<<pinkyTargetX Invalid>>", pinky.targetX() == pan.getX() + 20 );
+        pan.setDirection( "up" );
+        assertTrue( "<<pinkyTargetX Invalid>>", pinky.targetX() == pan.getX() );
+        pan.setDirection( "down" );
+        assertTrue( "<<pinkyTargetX Invalid>>", pinky.targetX() == pan.getX() );
+    }
+
+
+    @Test
+    public void pinkyTargetY()
+    {
+        Pan pan = new Pan( maze );
+        Pinky pinky = new Pinky( maze, pan );
+        pan.setDirection( "up" );
+        assertTrue( "<<pinkyTargetY Invalid>>", pinky.targetY() == pan.getY() - 20 );
+        pan.setDirection( "down" );
+        assertTrue( "<<pinkyTargetY Invalid>>", pinky.targetY() == pan.getY() + 20 );
+        pan.setDirection( "right" );
+        assertTrue( "<<pinkyTargetY Invalid>>", pinky.targetY() == pan.getY() );
+        pan.setDirection( "left" );
+        assertTrue( "<<pinkyTargetY Invalid>>", pinky.targetY() == pan.getY() );
+    }
 
     /*
      * Timer Tests:
