@@ -28,12 +28,37 @@ public class JUMacPanTest
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, //20
     };
     private Pan pan = new Pan(maze);
-    /*
+    
+     /*
      * Blinky Tests:
-     * 
-     * 
-     * 
+     * constructor
+     * targetX
+     * targetY
      */
+    @Test
+    public void blinkyConstructor()
+    {
+        Pan pan = new Pan(maze);
+        Blinky blinky = new Blinky( maze , pan );
+        assertNotNull( blinky );
+    }
+    
+
+    @Test
+    public void blinkyTargetX()
+    {
+        Pan pan = new Pan(maze);
+        Blinky blinky = new Blinky( maze , pan );
+        assertTrue( "<<blinkyTargetX Invalid>>", blinky.targetX() == pan.getX() );
+    }
+
+    @Test
+    public void blinkyTargetY()
+    {
+        Pan pan = new Pan(maze);
+        Blinky blinky = new Blinky( maze , pan );
+        assertTrue( "<<blinkyTargetY Invalid>>", blinky.targetY() == pan.getY() );
+    }
 
      /*
      * BlueMacaroni Tests:
