@@ -387,7 +387,6 @@ public class JUMacPanTest
      * getSecond
      * saveTime
      * getSavedTarget
-     * isCounting
      */
     
     @Test
@@ -422,8 +421,7 @@ public class JUMacPanTest
     {
         Timer timer = new Timer();
         timer.start( 10 );
-        timer.saveTime();
-        assertTrue( timer.getSavedTarget() == 10 && timer.isCounting() == false );
+        assertTrue( timer.isCounting() == true );
     }
     
     @Test
@@ -469,16 +467,6 @@ public class JUMacPanTest
         timer.start( 17 );
         timer.saveTime();
         assertTrue( timer.getSavedTarget() == 17 );
-    }
-    
-    @Test
-    public void timerIsCounting()
-    {
-        Timer timer = new Timer();
-        timer.start( 10 );
-        assertTrue( timer.isCounting() == true );
-        timer.saveTime();
-        assertTrue( timer.isCounting() == false );
     }
 
 }
