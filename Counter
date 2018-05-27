@@ -1,10 +1,11 @@
 import apcs.Window;
 
+
 /**
  * 
  * The Counter class keeps the game's score and displays it on the screen. The
  * player gets one point for eating a Macaroni object, and two points for eating
- * a Ghost in frigtened mode.
+ * a Ghost in frightened mode.
  *
  * @author Emmaline Mai, Anubha Kale, Shannon Liu
  * @version May 24, 2018
@@ -12,42 +13,52 @@ import apcs.Window;
  * @author Assignment: MacPan
  *
  */
- 
 public class Counter
 {
     private int numEaten;
 
+
     /**
      * Counter constructor.
      */
-    public Counter() {
+    public Counter()
+    {
         numEaten = -1;
     }
-    
+
+
     /**
      * 
      * Displays numEaten at the bottom corner of the screen.
      */
-    public void displayCounter() {
+    public void displayCounter()
+    {
         Window.out.color( "white" );
-        Window.out.print( "Score: " + numEaten, 670, 397 );
+        Window.out.print( "Score: " + numEaten*10, 670, 397 );
     }
-    
+
+
     /**
      * 
      * Setter method for numEaten.
-     * @param i is the number to set numEaten to.
+     * 
+     * @param i
+     *            is the number to set numEaten to.
      */
-    public void setNumEaten(int i) {
+    public void setNumEaten( int i )
+    {
         numEaten = i;
     }
-    
+
+
     /**
      * 
      * Accessor method for numEaten.
+     * 
      * @return numEaten
      */
-    public int getNumEaten() {
+    public int getNumEaten()
+    {
         return numEaten;
     }
 }
