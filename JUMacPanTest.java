@@ -215,26 +215,97 @@ public class JUMacPanTest
 
 
 
-    /*
-     * Pan Tests:
-     * Constructor
-     * move
-     * canMove
+ /*
+     * Pan Tests: 
+     * Constructor 
+     * move 
+     * canMove 
      * touchingGhost
-     * touchingMacaroni
-     * touchingBlueMacaroni
+     *  touchingMacaroni
+     * touchingBlueMacaroni 
      * getX
-     * getY
-     * getDirection
+     *  getY 
+     *  getDirection
      */
     @Test
-    public void panConstructor() {
-        Pan p = new Pan(maze);
-        assertNotNull(p);
+    public void panConstructor()
+    {
+        Pan p = new Pan( maze );
+        assertNotNull( p );
+    }
+
+
+    @Test
+    public void panMove()
+    {
+        pan.setX( 400 );
+        pan.setY( 360 );
+        int oldX = pan.getX();
+        pan.setDirection( "right" );
+        Window.frame();
+        pan.move();
+        assertTrue( pan.getX() > oldX );
+
+    }
+
+
+    @Test
+    public void panCanMove()
+    {
+        pan.setX( 400 );
+        pan.setY( 360 );
+        assertTrue( pan.canMoveTest( "right" ) );
     }
     
     @Test
-    public void panMove() {
+    public void panTouchingGhost() {
+        Blinky blinky = new Blinky( maze , pan );
+        blinky.setX( 410 );
+        blinky.setY( 360 );
+        pan.setX( 400 );
+        pan.setY( 360 );
+        assertTrue(pan.touchingGhost(blinky));
+        
+    }
+
+    @Test
+    public void panTouchingMacaroni() {
+        int arrayMacX = 20;
+        int arrayMacY = 18;
+        maze[arrayMacY][arrayMacX] = 2;
+        pan.setX( 400 );
+        pan.setY( 360 );
+        assertTrue(pan.touchingMacaroni(arrayMacY, arrayMacX));
+    }
+    
+    @Test
+    public void panTouchingBlueMacaroni() {
+        int arrayMacX = 20;
+        int arrayMacY = 18;
+        maze[arrayMacY][arrayMacX] = 5;
+        pan.setX( 400 );
+        pan.setY( 360 );
+        assertTrue(pan.touchingBlueMacaroni(arrayMacY, arrayMacX));
+    }
+    
+    @Test
+    public void panGetX() {
+        pan.setX( 400 );
+        assertTrue( pan.getX() == 400 );
+        
+    }
+    
+    @Test
+    public void panGetY() {
+        pan.setY( 300 );
+        assertTrue( pan.getY() == 300 );
+        
+    }
+    
+    @Test
+    public void panGetDirection() {
+        pan.setDirection( "right" );
+        assertTrue( pan.getDirection().equals( "right" ));
         
     }
 
