@@ -2,9 +2,8 @@ import java.util.TreeMap;
 import apcs.Window;
 
 /**
- *  TODO Write a one-sentence summary of your class here.
- *  TODO Follow it with additional details about its purpose, what abstraction
- *  it represents, and how to use it.
+ *  The Ghost abstract class has the basic methods for all Ghosts that allow it to 
+ *  move to a target location and be in frightened mode. THe Blinky, Pinky, and Inky classes extend it.
  *
  *  @author Emmaline Mai, Shannon Liu, Anubha Kale
  *  @version May 26, 2018
