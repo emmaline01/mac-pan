@@ -108,10 +108,134 @@ public class JUMacPanTest
 
     /*
      * Ghost Tests:
-     * 
-     * 
-     * 
+     * Constructor
+     * move
+     * moveForward
+     * dirReverse
+     * isInJail
+     * changeDir
+     * moveDir
+     * canMove
+     * initialFrightenedMove
+     * frightenedMove
+     * frightenedFlash
+     * getFrightened
+     * setFrightened
+     * isFrightened
+     * isEaten
      */
+    
+    @Test
+    public void ghostConstructor()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+        assertTrue( "<<ghostConstructor Invalid>>", g.getX() == 380 && g.getY() == 200 
+                        && g.getDir() == 0 && g.getDirection() == "right" );
+    }
+    
+    @Test
+    public void ghostMoveInJail()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        g.moveInJail();
+        assertTrue( "<<ghostMoveInJail Invalid>>", g.getX() == 384 && g.getY() == 200 
+                        && g.getDir() == 0 && g.getDirection() == "right" );
+    }
+    
+    @Test
+    public void ghostMoveOnPath()
+    {
+        //TODO
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        g.setX( 480 );
+        g.setY( 80 );
+        g.changeDir( 2 );
+        g.move();
+        assertTrue( "<<ghostMove Invalid>>", g.getX() == 480 && g.getY() == 84 
+                        && g.getDir() == 2 && g.getDirection() == "down");
+    }
+    
+    @Test
+    public void ghostMoveAtBorder()
+    {
+        //TODO
+    }
+    
+    @Test
+    public void ghostIsInJail()
+    {
+        //TODO
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        g.setX( 380 );
+        g.setY( 200 );
+        assertTrue( "<<ghostIsInJail Invalid>>", g.isInJail());
+        
+        g.setX( 440 );
+        g.setY( 200 );
+        assertTrue( "<<ghostIsInJail Invalid>>", g.isInJail());
+    }
+    
+    public void ghostCanMove()
+    {
+        //TODO
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+    }
+    
+    @Test
+    public void ghostInitialFrightenedMove()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+        g.setFrightened( 3 );
+        g.move();
+        
+        assertTrue( "<<ghostInitialFrightenedMove Invalid>>", g.getDirection() == "left"
+                        && g.getFrightenedTimer().isCounting() );
+    }
+    
+    @Test
+    public void ghostFrightenedFlash()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+        g.setFrightened( 3 );
+        
+        while(g.getFrightenedTimer().getSecond() <= 12)
+        {
+            g.move();
+        }
+        
+        assertTrue( "<<ghostFrightenedFlash Invalid>>", g.getFrightened() == 2);
+    }
+    
+    @Test
+    public void ghostMoveOutOfJail()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Blinky(maze, p);
+        int x = 0;
+        int y = 0;
+        
+        while(!g.getTimer().isTimeUp())
+        {
+            g.move();
+            x = g.getX();
+            y = g.getY();
+        }
+        
+        g.move();
+        
+        assertTrue( "<<ghostMoveOutOfJail Invalid>>", g.getX() == x && g.getY() == y - 4);
+    }
 
     /*
      * Inky Tests:
