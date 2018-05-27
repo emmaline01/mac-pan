@@ -188,7 +188,7 @@ public class MacPan
                 Window.out.fontSize( 40 );
                 Window.out.print( "   Y  O  U    W  O  N  !" , 210, 170 );
                 Window.out.fontSize( 30 );
-                Window.out.print( "Score: " + counter.getNumEaten(), 340, 240);
+                Window.out.print( "Score: " + counter.getNumEaten()*10 , 340, 240);
             }
             else
             {
@@ -199,7 +199,7 @@ public class MacPan
                 Window.out.fontSize( 40 );
                 Window.out.print( "G  A  M  E    O  V  E  R" , 220, 170 );
                 Window.out.fontSize( 30 );
-                Window.out.print( "Score: " + counter.getNumEaten(), 350, 240);
+                Window.out.print( "Score: " + counter.getNumEaten()*10 , 350, 240);
             }
             
         }
