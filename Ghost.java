@@ -311,11 +311,6 @@ public abstract class Ghost
         return (v1 != 4) && (v2 != 4);
     }
     
-    public Timer getTimer()
-    {
-        return timer;
-    }
-    
     public void initialFrightenedMove()
     {
         // In the beginnning when the pan first eats the BlueMacaroni
@@ -511,6 +506,12 @@ public abstract class Ghost
         return x;
     }
     
+    public void setDir( int n )
+    {
+        dir = n;
+        direction = dirArr[n];
+    }
+    
     /**
      * Returns the y-coordinate of the ghost
      * @return current y-coordinate of the ghost
@@ -528,5 +529,23 @@ public abstract class Ghost
     public String getDirection()
     {
         return direction;
+    }
+    
+    /**
+     * Returns the timer of the ghost when it's in jail.
+     * @return timer
+     */
+    public Timer getTimer()
+    {
+        return timer;
+    }
+    
+    /**
+     * Returns the timer of the ghost when it's in frightened mode.
+     * @return frightenedTimer()
+     */
+    public Timer getFrightenedTimer()
+    {
+        return frightenedTimer;
     }
 }
