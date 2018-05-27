@@ -2,6 +2,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import apcs.Window;
+
 public class JUMacPanTest
 {
     private int[][] maze = {
