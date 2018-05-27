@@ -386,9 +386,106 @@ public class JUMacPanTest
 
     /*
      * Timer Tests:
-     * 
-     * 
-     * 
+     * constructor
+     * count
+     * reset
+     * start
+     * isTimeUp
+     * getSecond
+     * saveTime
+     * getSavedTarget
+     * isCounting
      */
+    
+    @Test
+    public void timerConstructor()
+    {
+        Timer timer = new Timer();
+        assertNotNull( timer );
+    }
+    
+    @Test
+    public void timerCount()
+    {
+        Timer timer = new Timer();
+        assertTrue( timer.getSecond() == 0 );
+        timer.start( 10 );
+        timer.count();    
+        assertTrue( timer.getMillisecond() == 30 );
+    }
+    
+    @Test
+    public void timerReset()
+    {
+        Timer timer = new Timer();
+        assertTrue( timer.getSecond() == 0 );
+        assertTrue( timer.getSavedTarget() == 0 );
+        assertTrue( timer.isCounting() == false );
+    }
+
+
+    @Test
+    public void timerStart()
+    {
+        Timer timer = new Timer();
+        timer.start( 10 );
+        timer.saveTime();
+        assertTrue( timer.getSavedTarget() == 10 && timer.isCounting() == false );
+    }
+    
+    @Test
+    public void timerIsTimeUp()
+    {
+        Timer timer = new Timer();
+        timer.start( 1 );
+        assertTrue( timer.isTimeUp() == false );
+        for ( int i = 0 ; i < 100 ; i ++ )
+        {
+            timer.count();
+        }
+        assertTrue( timer.isTimeUp() == true );
+    }
+    
+    @Test
+    public void timerGetSecond()
+    {
+        Timer timer = new Timer();
+        assertTrue( timer.getSecond() == 0 );
+        timer.start( 10 );
+        for ( int i = 0 ; i < 100 ; i++ )
+        {
+            timer.count();
+        }
+        System.out.print( timer.getSecond() );
+        assertTrue( timer.getSecond() == 2);
+    }
+    
+    @Test
+    public void timerSaveTime()
+    {
+        Timer timer = new Timer();
+        timer.start( 10 );
+        timer.saveTime();
+        assertTrue( timer.getSavedTarget() == 10 && timer.isCounting() == false );
+    }
+    
+    @Test
+    public void timerGetSavedTarget()
+    {
+        Timer timer = new Timer();
+        timer.start( 17 );
+        timer.saveTime();
+        assertTrue( timer.getSavedTarget() == 17 );
+    }
+    
+    @Test
+    public void timerIsCounting()
+    {
+        Timer timer = new Timer();
+        timer.start( 10 );
+        assertTrue( timer.isCounting() == true );
+        timer.saveTime();
+        assertTrue( timer.isCounting() == false );
+    }
 
 }
