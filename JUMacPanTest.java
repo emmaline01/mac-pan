@@ -31,40 +31,39 @@ public class JUMacPanTest
     };
     private Pan pan = new Pan(maze);
     
-     /*
-     * Blinky Tests:
-     * constructor
-     * targetX
-     * targetY
+
+    /*
+     * Blinky Tests: constructor targetX targetY
      */
     @Test
     public void blinkyConstructor()
     {
-        Pan pan = new Pan(maze);
-        Blinky blinky = new Blinky( maze , pan );
+        Pan pan = new Pan( maze );
+        Blinky blinky = new Blinky( maze, pan );
         assertNotNull( blinky );
     }
-    
+
 
     @Test
     public void blinkyTargetX()
     {
-        Pan pan = new Pan(maze);
-        Blinky blinky = new Blinky( maze , pan );
+        Pan pan = new Pan( maze );
+        Blinky blinky = new Blinky( maze, pan );
         assertTrue( "<<blinkyTargetX Invalid>>", blinky.targetX() == pan.getX() );
     }
+
 
     @Test
     public void blinkyTargetY()
     {
-        Pan pan = new Pan(maze);
-        Blinky blinky = new Blinky( maze , pan );
+        Pan pan = new Pan( maze );
+        Blinky blinky = new Blinky( maze, pan );
         assertTrue( "<<blinkyTargetY Invalid>>", blinky.targetY() == pan.getY() );
     }
 
-     /*
-     * BlueMacaroni Tests:
-     * constructor
+
+    /*
+     * BlueMacaroni Tests: constructor
      */
 
     @Test
@@ -72,16 +71,12 @@ public class JUMacPanTest
     {
         Macaroni bm = new BlueMacaroni( maze, 40, 20 );
         assertNotNull( bm );
-        assertTrue( "<<blueMacaroniConstructor Invalid>>", bm.getX() == 40 
-                        && bm.getY() == 20 );
+        assertTrue( "<<blueMacaroniConstructor Invalid>>", bm.getX() == 40 && bm.getY() == 20 );
     }
 
+
     /*
-     * Counter Tests:
-     * Constructor
-     * displayCounter
-     * setNumEaten
-     * getNumEaten
+     * Counter Tests: Constructor displayCounter setNumEaten getNumEaten
      */
     @Test
     public void counterConstructor()
@@ -89,7 +84,8 @@ public class JUMacPanTest
         Counter c = new Counter();
         assertTrue( "<<counterConstructor Invalid>>", c.getNumEaten() == -1 );
     }
-    
+
+
     @Test
     public void counterSetNumEaten()
     {
@@ -97,7 +93,8 @@ public class JUMacPanTest
         c.setNumEaten( 145 );
         assertTrue( "<<counterSetNumEaten Invalid>>", c.getNumEaten() == 145 );
     }
-    
+
+
     @Test
     public void counterGetNumEaten()
     {
@@ -259,11 +256,9 @@ public class JUMacPanTest
         assertTrue( "<<ghostIsEaten Invalid>>", g.isEaten());
     }
 
+
     /*
-     * Inky Tests:
-     * constructor
-     * targetX
-     * targetY
+     * Inky Tests: constructor targetX targetY
      */
     @Test
     public void inkyConstructor()
@@ -292,7 +287,7 @@ public class JUMacPanTest
         assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() - dist );
         pan.setX( 20 );
         assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() );
-        pan.setDirection( "right" ); 
+        pan.setDirection( "right" );
         pan.setX( 780 );
         assertTrue( "<<inkyTargetX Invalid>>", inky.targetX() == pan.getX() );
         pan.setDirection( "invalid" );
@@ -321,16 +316,16 @@ public class JUMacPanTest
         assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() - dist );
         pan.setY( 20 );
         assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() );
-        pan.setDirection( "down" ); 
+        pan.setDirection( "down" );
         pan.setX( 100 );
         pan.setY( 380 );
         blinky.setX( 200 );
         blinky.setY( 360 );
         assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() );
         pan.setDirection( "invalid" );
-        
         assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == 0 );
     }
+
 
     /*
      * Macaroni Tests: 
@@ -354,19 +349,12 @@ public class JUMacPanTest
         assertTrue( "<<macaroniRemove Invalid>>", mac.isRemoved() == true );
     }
 
- /*
-     * Pan Tests: 
-     * Constructor 
-     * move 
-     * canMove 
-     * touchingGhost
-     *  touchingMacaroni
-     * touchingBlueMacaroni 
-     * getX
-     *  getY 
-     *  getDirection
+
+    /*
+     * Pan Tests: Constructor move canMove touchingGhost touchingMacaroni
+     * touchingBlueMacaroni getX getY getDirection
      */
-     @Test
+    @Test
     public void panConstructor()
     {
         Pan p = new Pan( maze );
@@ -384,16 +372,16 @@ public class JUMacPanTest
         Window.frame();
         pan.move();
         assertTrue( pan.getX() > oldX );
-        
+
         oldX = pan.getX();
-        pan.timerTest("right");
+        pan.timerTest( "right" );
         pan.move();
         assertTrue( pan.getX() > oldX );
-        
+
         pan.setX( 760 );
         pan.setY( 150 );
         int oldY = pan.getY();
-        pan.timerTest("up");
+        pan.timerTest( "up" );
         pan.move();
         assertTrue( pan.getY() < oldY );
 
@@ -413,73 +401,83 @@ public class JUMacPanTest
         assertTrue( pan.canMoveTest( "right" ) );
         assertTrue( !pan.canMoveTest( "up" ) );
     }
-    
+
+
     @Test
-    public void panTouchingGhost() {
-        Blinky blinky = new Blinky( maze , pan );
+    public void panTouchingGhost()
+    {
+        Blinky blinky = new Blinky( maze, pan );
         blinky.setX( 410 );
         blinky.setY( 360 );
         pan.setX( 400 );
         pan.setY( 360 );
-        assertTrue(pan.touchingGhost(blinky));
+        assertTrue( pan.touchingGhost( blinky ) );
         pan.setX( 500 );
         pan.setY( 360 );
-        assertTrue(!pan.touchingGhost(blinky));
-        
+        assertTrue( !pan.touchingGhost( blinky ) );
+
     }
 
+
     @Test
-    public void panTouchingMacaroni() {
+    public void panTouchingMacaroni()
+    {
         int arrayMacX = 20;
         int arrayMacY = 18;
         maze[arrayMacY][arrayMacX] = 2;
         pan.setX( 400 );
         pan.setY( 360 );
-        assertTrue(pan.touchingMacaroni(arrayMacY, arrayMacX));
+        assertTrue( pan.touchingMacaroni( arrayMacY, arrayMacX ) );
         pan.setX( 500 );
         pan.setY( 360 );
-        assertTrue(!pan.touchingMacaroni(arrayMacY, arrayMacX));
+        assertTrue( !pan.touchingMacaroni( arrayMacY, arrayMacX ) );
     }
-    
+
+
     @Test
-    public void panTouchingBlueMacaroni() {
+    public void panTouchingBlueMacaroni()
+    {
         int arrayMacX = 20;
         int arrayMacY = 18;
         maze[arrayMacY][arrayMacX] = 5;
         pan.setX( 400 );
         pan.setY( 360 );
-        assertTrue(pan.touchingBlueMacaroni(arrayMacY, arrayMacX));
+        assertTrue( pan.touchingBlueMacaroni( arrayMacY, arrayMacX ) );
         pan.setX( 500 );
         pan.setY( 360 );
-        assertTrue(!pan.touchingBlueMacaroni(arrayMacY, arrayMacX));
-    }
-    
-    @Test
-    public void panGetX() {
-        pan.setX( 400 );
-        assertTrue( pan.getX() == 400 );
-        
-    }
-    
-    @Test
-    public void panGetY() {
-        pan.setY( 300 );
-        assertTrue( pan.getY() == 300 );
-        
-    }
-    
-    @Test
-    public void panGetDirection() {
-        pan.setDirection( "right" );
-        assertTrue( pan.getDirection().equals( "right" ));
-        
+        assertTrue( !pan.touchingBlueMacaroni( arrayMacY, arrayMacX ) );
     }
 
+
+    @Test
+    public void panGetX()
+    {
+        pan.setX( 400 );
+        assertTrue( pan.getX() == 400 );
+
+    }
+
+
+    @Test
+    public void panGetY()
+    {
+        pan.setY( 300 );
+        assertTrue( pan.getY() == 300 );
+
+    }
+
+
+    @Test
+    public void panGetDirection()
+    {
+        pan.setDirection( "right" );
+        assertTrue( pan.getDirection().equals( "right" ) );
+
+    }
+
+
     /*
-     * Pinky Tests:
-     * constructor
-     * targetX
-     * targetY
+     * Pinky Tests: constructor targetX targetY
      */
     @Test
     public void pinkyConstructor()
@@ -591,7 +589,7 @@ public class JUMacPanTest
         {
             timer.count();
         }
-        
+        System.out.print( timer.getSecond() );
         assertTrue( timer.getSecond() == 2);
     }
     
@@ -612,5 +610,7 @@ public class JUMacPanTest
         timer.saveTime();
         assertTrue( timer.getSavedTarget() == 17 );
     }
+    
+    
 
 }
