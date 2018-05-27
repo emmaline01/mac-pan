@@ -187,26 +187,19 @@ public class JUMacPanTest
     }
 
     /*
-     * Macaroni Tests:
-     *  Constructor
-     *  place
-     *  remove
-     * 
+     * Macaroni Tests: 
+     * Constructor
+     * remove
      */
     @Test
-    public void macaroniConstructor() {
-        Macaroni mac = new Macaroni (maze, 20, 20);
-        assertNotNull(mac);
-    }
-    
-
-    @Test
-    public void macaroniPlace()
+    public void macaroniConstructor()
     {
         Macaroni mac = new Macaroni( maze, 20, 40 );
+        assertNotNull(mac);
         assertTrue( "<<macaroniPlace Invalid>>", mac.getX() == 20 && mac.getY() == 40 );
     }
-    
+
+
     @Test
     public void macaroniRemove()
     {
