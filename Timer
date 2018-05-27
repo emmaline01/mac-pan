@@ -1,64 +1,142 @@
+/**
+ * 
+ * The Timer class is a timer that counts in milliseconds using the number of
+ * frames the game shows each second.
+ *
+ * @author Shannon Liu, Emmaline Mai, Anubha Kale
+ * @version May 24, 2018
+ * @author Period: 5
+ * @author Assignment: MacPan
+ *
+ */
 
 public class Timer
 {
     private int millisecond;
+
     private int targetTime;
+
     private int savedTarget;
+
     private boolean counting;
-    
+
+
+    /**
+     * Timer Constructor
+     */
     public Timer()
     {
         reset();
     }
-    
+
+
+    /**
+     * 
+     * Adds 30 milliseconds for each frame every time it is called as long as
+     * the timer has not reached the target time yet.
+     */
     public void count()
     {
-        if (targetTime > 0) // counting
+        if ( targetTime > 0 ) // counting
         {
             millisecond += 30;
         }
     }
 
+
+    /**
+     * 
+     * Resets the timer by stopping it from counting setting the milliseconds it
+     * was counting to 0, and changing the target time to 0.
+     */
     public void reset()
     {
         millisecond = 0;
         targetTime = 0;
         counting = false;
     }
-    
-    // start timer with target seconds
-    public void start(int target)
+
+
+    /**
+     * 
+     * Starts the timer and sets the target time
+     * 
+     * @param target
+     *            is the target time for the timer to count up to
+     */
+    public void start( int target )
     {
         targetTime = target * 1400;
         counting = true;
     }
 
+
+    /**
+     * 
+     * Checks if the milliseconds it has counted up to has reached the target
+     * number of milliseconds yet.
+     * 
+     * @return whether it has counted up to the target time yet
+     */
     public boolean isTimeUp()
     {
-        return (millisecond >= targetTime);
+        return ( millisecond >= targetTime );
     }
-    
+
+
+    /**
+     * 
+     * Getter method for the milliseconds the timer has counted up to.
+     * 
+     * @return the milliseconds the timer has counted
+     */
     public int getMillisecond()
     {
         return millisecond;
     }
-    
+
+
+    /**
+     * 
+     * Getter method for the seconds the timer has counted up to.
+     * 
+     * @return the seconds the timer has counted
+     */
     public int getSecond()
     {
         return millisecond / 1400;
     }
-    
+
+
+    /**
+     * 
+     * Saves the time it has at that moment.
+     */
     public void saveTime()
     {
         savedTarget = targetTime / 1400;
         counting = false;
     }
-    
+
+
+    /**
+     * 
+     * Getter method for savedTarget.
+     * 
+     * @return savedTarget
+     */
     public int getSavedTarget()
     {
         return savedTarget;
     }
-    
+
+
+    /**
+     * 
+     * Getter method for counting, which tells whether the timer is counting.
+     * 
+     * @return counting
+     */
     public boolean isCounting()
     {
         return counting;
