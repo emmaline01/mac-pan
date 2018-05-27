@@ -589,7 +589,6 @@ public class JUMacPanTest
         {
             timer.count();
         }
-        System.out.print( timer.getSecond() );
         assertTrue( timer.getSecond() == 2);
     }
     
