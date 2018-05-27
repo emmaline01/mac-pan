@@ -315,9 +315,24 @@ public class Pan
         y = i;
     }
 
-
+    /**
+     * 
+     * Accessor method for the canMove test
+     * @param s is the direction it's checking
+     * @return whether it can move in that direction
+     */
     public boolean canMoveTest( String s )
     {
         return canMove( s );
+    }
+    
+    /**
+     * 
+     * Starts a timer to test that section of the move method's code.
+     * @param n is the direction the Pan wants to move next
+     */
+    public void timerTest( String n) {
+        t.start( 1 );
+        next = n;
     }
 }
