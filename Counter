@@ -1,5 +1,18 @@
 import apcs.Window;
 
+/**
+ * 
+ * The Counter class keeps the game's score and displays it on the screen. The
+ * player gets one point for eating a Macaroni object, and two points for eating
+ * a Ghost in frigtened mode.
+ *
+ * @author Emmaline Mai, Anubha Kale, Shannon Liu
+ * @version May 24, 2018
+ * @author Period: 5
+ * @author Assignment: MacPan
+ *
+ */
+ 
 public class Counter
 {
     private int numEaten;
