@@ -229,7 +229,7 @@ public class JUMacPanTest
      *  getY 
      *  getDirection
      */
-    @Test
+     @Test
     public void panConstructor()
     {
         Pan p = new Pan( maze );
@@ -247,6 +247,18 @@ public class JUMacPanTest
         Window.frame();
         pan.move();
         assertTrue( pan.getX() > oldX );
+        
+        oldX = pan.getX();
+        pan.timerTest("right");
+        pan.move();
+        assertTrue( pan.getX() > oldX );
+        
+        pan.setX( 760 );
+        pan.setY( 150 );
+        int oldY = pan.getY();
+        pan.timerTest("up");
+        pan.move();
+        assertTrue( pan.getY() < oldY );
 
     }
 
@@ -254,9 +266,15 @@ public class JUMacPanTest
     @Test
     public void panCanMove()
     {
+        pan.setX( 760 );
+        pan.setY( 150 );
+        assertTrue( pan.canMoveTest( "down" ) );
+        assertTrue( pan.canMoveTest( "up" ) );
         pan.setX( 400 );
         pan.setY( 360 );
+        assertTrue( pan.canMoveTest( "left" ) );
         assertTrue( pan.canMoveTest( "right" ) );
+        assertTrue( !pan.canMoveTest( "up" ) );
     }
     
     @Test
@@ -267,6 +285,9 @@ public class JUMacPanTest
         pan.setX( 400 );
         pan.setY( 360 );
         assertTrue(pan.touchingGhost(blinky));
+        pan.setX( 500 );
+        pan.setY( 360 );
+        assertTrue(!pan.touchingGhost(blinky));
         
     }
 
@@ -278,6 +299,9 @@ public class JUMacPanTest
         pan.setX( 400 );
         pan.setY( 360 );
         assertTrue(pan.touchingMacaroni(arrayMacY, arrayMacX));
+        pan.setX( 500 );
+        pan.setY( 360 );
+        assertTrue(!pan.touchingMacaroni(arrayMacY, arrayMacX));
     }
     
     @Test
@@ -288,6 +312,9 @@ public class JUMacPanTest
         pan.setX( 400 );
         pan.setY( 360 );
         assertTrue(pan.touchingBlueMacaroni(arrayMacY, arrayMacX));
+        pan.setX( 500 );
+        pan.setY( 360 );
+        assertTrue(!pan.touchingBlueMacaroni(arrayMacY, arrayMacX));
     }
     
     @Test
