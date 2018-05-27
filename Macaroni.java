@@ -1,6 +1,5 @@
 import apcs.Window;
 
-
 /**
  * A Macaroni object represents a token (shaped as a Macaroni) that is placed on
  * the board for the Pan to eat. It is added to the board in the main method. It
@@ -43,7 +42,6 @@ public class Macaroni
         x = a;
         y = b;
         image = "macaroniPic.png";
-        // place( a, b );
     }
 
 
@@ -59,16 +57,6 @@ public class Macaroni
             maze[y][x] = 2;
         }
     }
-
-
-    // public void place( int a, int b )
-    // {
-    // if ( removed != true )
-    // {
-    // Window.out.image( image, a * 20, b * 20 );
-    // maze[b][a] = 2;
-    // }
-    // }
 
     /**
      * The method remove sets removed to true.
