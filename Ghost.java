@@ -81,138 +81,8 @@ public abstract class Ghost
      * @return target y-coordinate
      */
     public abstract int targetY();
-
-
+    
     /**
-     * Places ghost on the default coordinate (380, 200) Sets the direction of
-     * the ghost to the right.
-     */
-    public void initMove()
-    {
-        x = 380;
-        y = 200;
-        changeDir( 0 );
-    }
-
-
-    /**
-     * Change the coordinates according the direction it will head in and
-     * displays the image.
-     */
-    public void moveForward()
-    {
-        x += shiftXArr[dir];
-        y += shiftYArr[dir];
-        direction = dirArr[dir];
-
-        Window.out.image( images.get( direction ), x, y );
-        timer.count();
-    }
-
-
-    /**
-     * Reverses the direction the ghost heads in. If it was heading right, it
-     * will head left and vice versa. If it was heading up, it will head down
-     * and vice versa.
-     * 
-     * @param d The direction the ghost was heading in initially
-     */
-    public void dirReverse( int d )
-    {
-        dir = oppDirIndex[d];
-        direction = dirArr[dir];
-    }
-
-
-    /**
-     * Determines whether or not the ghost is currently in the jail
-     * 
-     * @return true if the ghost is in jail
-     */
-    public boolean isInJail()
-    {
-        return ( ( maze[y / 20][x / 20] == 4 ) || ( maze[y / 20][( x + 19 ) / 20] == 4 )
-            || ( maze[( y + 19 ) / 20][x / 20] == 4 )
-            || ( maze[( y + 19 ) / 20][( x + 19 ) / 20] == 4 ) );
-    }
-
-
-    /**
-     * The ghost will move horizontally until it hits the wall, reverses its
-     * direction, and repeat.
-     */
-    public void moveInJail()
-    {
-        if ( !canMove( direction, isInJail() ) )
-        {
-            dirReverse( dir );
-            moveForward();
-            timer.count();
-        }
-        else
-        {
-            moveForward();
-            timer.count();
-        }
-    }
-
-
-    /**
-     * Change the direction the ghost is heading in to a given direction.
-     * 
-     * @param d The index of the direction the ghost will head in.
-     */
-    public void changeDir( int d )
-    {
-        dir = d;
-        direction = dirArr[d];
-    }
-
-
-    /**
-     * Move in the direction that is specified.
-     * 
-     * @param d Index of the direction.
-     */
-    public void moveDir( int d )
-    {
-        changeDir( d );
-        moveForward();
-    }
-
-
-    /**
-     * Move to the center and move out of the jail.
-     */
-    public void moveOutOfJail()
-    {
-        if ( x < 388 )
-        {
-            moveDir( 0 );
-        }
-        else if ( x > 392 )
-        {
-            moveDir( 3 );
-        }
-        else
-        {
-            moveDir( 1 );
-        }
-    }
-
-
-    /**
-     * The ghost is moved back to it's initial position in jail
-     */
-    public void backToJail()
-    {
-        initMove();
-        Window.out.image( images.get( direction ), x, y );
-    }
-
-
-    /**
-     * 
      * Move to target coordinates that is calculated in the subclass.
      */
     public void move()
@@ -304,8 +174,7 @@ public abstract class Ghost
             }
         }
     }
-
-
+    
     /**
      * Identifies whether or not the ghost can move forward in the direction
      * it's facing
@@ -352,7 +221,6 @@ public abstract class Ghost
         return ( v1 != 4 ) && ( v2 != 4 );
     }
 
-
     /**
      * The ghost's initial movement when it becomes frightened
      */
@@ -377,7 +245,6 @@ public abstract class Ghost
 
         Window.out.image( images.get( "edible" ), x, y );
     }
-
 
     /**
      * The ghosts' movements 10 seconds after the pan eats the blue macaroni If
@@ -438,7 +305,6 @@ public abstract class Ghost
             setFrightened( 2 );
         }
     }
-
 
     /**
      * The ghost's flashing movement 5 seconds before they return to normal If
@@ -514,18 +380,129 @@ public abstract class Ghost
             }
         }
     }
-
-
-    /**
-     * Returns the frightened mode number that the ghost is in
-     * 
-     * @return frightened mode number
+    
+    /*
+     * Helper Methods
      */
-    public int getFrightened()
+    
+    /**
+     * Places ghost on the default coordinate (380, 200) Sets the direction of
+     * the ghost to the right.
+     */
+    public void initMove()
     {
-        return frightened;
+        x = 380;
+        y = 200;
+        changeDir( 0 );
+    }
+    
+    /**
+     * Change the direction the ghost is heading in to a given direction.
+     * 
+     * @param d The index of the direction the ghost will head in.
+     */
+    public void changeDir( int d )
+    {
+        dir = d;
+        direction = dirArr[d];
+    }
+    
+    /**
+     * Move in the direction that is specified.
+     * 
+     * @param d Index of the direction.
+     */
+    public void moveDir( int d )
+    {
+        changeDir( d );
+        moveForward();
+    }
+    
+    /**
+     * Change the coordinates according the direction it will head in and
+     * displays the image.
+     */
+    public void moveForward()
+    {
+        x += shiftXArr[dir];
+        y += shiftYArr[dir];
+        direction = dirArr[dir];
+
+        Window.out.image( images.get( direction ), x, y );
+        timer.count();
     }
 
+    /**
+     * Reverses the direction the ghost heads in. If it was heading right, it
+     * will head left and vice versa. If it was heading up, it will head down
+     * and vice versa.
+     * 
+     * @param d The direction the ghost was heading in initially
+     */
+    public void dirReverse( int d )
+    {
+        dir = oppDirIndex[d];
+        direction = dirArr[dir];
+    }
+
+    /**
+     * Determines whether or not the ghost is currently in the jail
+     * 
+     * @return true if the ghost is in jail
+     */
+    public boolean isInJail()
+    {
+        return ( ( maze[y / 20][x / 20] == 4 ) || ( maze[y / 20][( x + 19 ) / 20] == 4 )
+            || ( maze[( y + 19 ) / 20][x / 20] == 4 )
+            || ( maze[( y + 19 ) / 20][( x + 19 ) / 20] == 4 ) );
+    }
+
+    /**
+     * The ghost will move horizontally until it hits the wall, reverses its
+     * direction, and repeat.
+     */
+    public void moveInJail()
+    {
+        if ( !canMove( direction, isInJail() ) )
+        {
+            dirReverse( dir );
+            moveForward();
+            timer.count();
+        }
+        else
+        {
+            moveForward();
+            timer.count();
+        }
+    }
+
+    /**
+     * Move to the center and move out of the jail.
+     */
+    public void moveOutOfJail()
+    {
+        if ( x < 388 )
+        {
+            moveDir( 0 );
+        }
+        else if ( x > 392 )
+        {
+            moveDir( 3 );
+        }
+        else
+        {
+            moveDir( 1 );
+        }
+    }
+
+    /**
+     * The ghost is moved back to it's initial position in jail
+     */
+    public void backToJail()
+    {
+        initMove();
+        Window.out.image( images.get( direction ), x, y );
+    }
 
     /**
      * Sets the frightened mode number to a given value
@@ -537,7 +514,16 @@ public abstract class Ghost
     {
         frightened = value;
     }
-
+    
+    /**
+     * Returns the frightened mode number that the ghost is in
+     * 
+     * @return frightened mode number
+     */
+    public int getFrightened()
+    {
+        return frightened;
+    }
 
     /**
      * Returns true if the frightened number of the ghost is 1, 2, or 3.
@@ -548,7 +534,6 @@ public abstract class Ghost
     {
         return frightened == 1 || frightened == 2 || frightened == 3;
     }
-
 
     /**
      * Returns true if the ghost touches the pan in frightened mode
