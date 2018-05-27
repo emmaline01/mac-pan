@@ -110,18 +110,11 @@ public class JUMacPanTest
      * Ghost Tests:
      * Constructor
      * move
-     * moveForward
      * dirReverse
      * isInJail
      * changeDir
-     * moveDir
-     * canMove
      * initialFrightenedMove
-     * frightenedMove
      * frightenedFlash
-     * getFrightened
-     * setFrightened
-     * isFrightened
      * isEaten
      */
     
@@ -152,6 +145,17 @@ public class JUMacPanTest
     }
     
     @Test
+    public void ghostChangeDir()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+        g.changeDir( 2 );
+        
+        assertTrue( "<<ghostReverseDir Invalid>>", g.getDir() == 2 && g.getDirection() == "down" );
+    }
+    
+    @Test
     public void ghostMoveInJail()
     {
         Pan p = new Pan(maze);
@@ -162,43 +166,8 @@ public class JUMacPanTest
     }
     
     @Test
-    public void ghostMoveOnPath()
-    {
-        //TODO
-        Pan p = new Pan(maze);
-        Ghost g = new Pinky(maze, p);
-        g.setX( 480 );
-        g.setY( 80 );
-        g.changeDir( 2 );
-        g.move();
-        assertTrue( "<<ghostMove Invalid>>", g.getX() == 480 && g.getY() == 84 
-                        && g.getDir() == 2 && g.getDirection() == "down");
-    }
-    
-    @Test
-    public void ghostMoveAtBorder()
-    {
-      //TODO
-        Pan p = new Pan(maze);
-        Ghost g = new Pinky(maze, p);
-        
-        g.setX( 400 );
-        g.setY( 40 );
-        g.setDir( 1 );
-        
-        p.setX( 500 );
-        p.setY( 40 );
-        
-        g.move();
-        
-        assertTrue( "<<ghostMove Invalid>>", g.getX() == 484 && g.getY() == 80 
-                        && g.getDir() == 0 && g.getDirection() == "right");
-    }
-    
-    @Test
     public void ghostIsInJail()
     {
-        //TODO
         Pan p = new Pan(maze);
         Ghost g = new Pinky(maze, p);
         g.setX( 380 );
@@ -269,6 +238,25 @@ public class JUMacPanTest
         g.move();
         
         assertTrue( "<<ghostMoveOutOfJail Invalid>>", g.getX() == x && g.getY() == y - 4);
+    }
+    
+    @Test
+    public void ghostIsEaten()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+        while(g.isInJail())
+        {
+            g.move();
+        }
+        
+        p.setX( g.getX() );
+        p.setY( g.getY() );
+        
+        g.setFrightened( 3 );
+        
+        assertTrue( "<<ghostIsEaten Invalid>>", g.isEaten());
     }
 
     /*
