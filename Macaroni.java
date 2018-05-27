@@ -84,9 +84,9 @@ public class Macaroni
 
 
     /**
-     * Accessor method for pan's x coordinate
+     * Accessor method for Macaroni's x coordinate
      * 
-     * @return x coordinate of the pan
+     * @return x coordinate of the Macaroni
      */
     public int getX()
     {
@@ -95,9 +95,9 @@ public class Macaroni
 
 
     /**
-     * Accessor method for pan's y coordinate
+     * Accessor method for Macaroni's y coordinate
      * 
-     * @return y coordinate of the pan
+     * @return y coordinate of the Macaroni
      */
     public int getY()
     {
