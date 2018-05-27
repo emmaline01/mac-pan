@@ -1,14 +1,36 @@
 import apcs.Window;
 
+
+/**
+ * 
+ * The BlueMacaroni class extends the Macaroni class and is displayed as a blue
+ * version of the same macaroni picture. It is where the number 5 is in the maze array.
+ *
+ * @author Anubha Kale, Emmaline Mai, Shannon Liu
+ * @version May 27, 2018
+ * @author Period: 5
+ * @author Assignment: MacPan
+ *
+ */
 public class BlueMacaroni extends Macaroni
 {
 
+    /**
+     * BlueMacaroni Constructor
+     * @param maze is the array of maze values
+     * @param a is the x coordinate for it to be placed
+     * @param b is the y coordinate for it to be placed
+     */
     public BlueMacaroni( int[][] maze, int a, int b )
     {
         super( maze, a, b );
         image = "blueMacaroni.png";
     }
-    
+
+
+    /**
+     * Draws the BlueMacaroni object at its x and y coordinates if hasn't already been removed.
+     */
     public void place()
     {
         if ( removed != true )
