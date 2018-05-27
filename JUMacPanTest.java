@@ -136,6 +136,22 @@ public class JUMacPanTest
     }
     
     @Test
+    public void ghostReverseDir()
+    {
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+        g.dirReverse( 0 );
+        
+        assertTrue( "<<ghostReverseDir Invalid>>", g.getDir() == 3 && g.getDirection() == "left" );
+        
+        g.setDir( 1 );
+        g.dirReverse( 1 );
+        
+        assertTrue( "<<ghostReverseDir Invalid>>", g.getDir() == 2 && g.getDirection() == "down" );
+    }
+    
+    @Test
     public void ghostMoveInJail()
     {
         Pan p = new Pan(maze);
@@ -162,7 +178,21 @@ public class JUMacPanTest
     @Test
     public void ghostMoveAtBorder()
     {
-        //TODO
+      //TODO
+        Pan p = new Pan(maze);
+        Ghost g = new Pinky(maze, p);
+        
+        g.setX( 400 );
+        g.setY( 40 );
+        g.setDir( 1 );
+        
+        p.setX( 500 );
+        p.setY( 40 );
+        
+        g.move();
+        
+        assertTrue( "<<ghostMove Invalid>>", g.getX() == 484 && g.getY() == 80 
+                        && g.getDir() == 0 && g.getDirection() == "right");
     }
     
     @Test
@@ -175,17 +205,21 @@ public class JUMacPanTest
         g.setY( 200 );
         assertTrue( "<<ghostIsInJail Invalid>>", g.isInJail());
         
-        g.setX( 440 );
+        g.setX( 436 );
         g.setY( 200 );
         assertTrue( "<<ghostIsInJail Invalid>>", g.isInJail());
-    }
-    
-    public void ghostCanMove()
-    {
-        //TODO
-        Pan p = new Pan(maze);
-        Ghost g = new Pinky(maze, p);
         
+        g.setX( 380 );
+        g.setY( 236 );
+        assertTrue( "<<ghostIsInJail Invalid>>", g.isInJail());
+        
+        g.setX( 436 );
+        g.setY( 235 );
+        assertTrue( "<<ghostIsInJail Invalid>>", g.isInJail());
+        
+        g.setX( 200 );
+        g.setY( 40 );
+        assertTrue( "<<ghostIsInJail Invalid>>", !g.isInJail());
     }
     
     @Test
@@ -306,7 +340,7 @@ public class JUMacPanTest
         blinky.setY( 360 );
         assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == pan.getY() );
         pan.setDirection( "invalid" );
-        System.out.println(inky.targetY() + " " + pan.getY());
+        
         assertTrue( "<<inkyTargetY Invalid>>", inky.targetY() == 0 );
     }
 
@@ -331,8 +365,6 @@ public class JUMacPanTest
         mac.remove();
         assertTrue( "<<macaroniRemove Invalid>>", mac.isRemoved() == true );
     }
-
-
 
  /*
      * Pan Tests: 
@@ -571,7 +603,7 @@ public class JUMacPanTest
         {
             timer.count();
         }
-        System.out.print( timer.getSecond() );
+        
         assertTrue( timer.getSecond() == 2);
     }
     
