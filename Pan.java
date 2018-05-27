@@ -18,9 +18,9 @@ import apcs.Window;
  */
 public class Pan
 {
-    private int x;
+    private int x = 400;
 
-    private int y;
+    private int y = 360;
 
     private int[][] maze;
 
@@ -39,8 +39,6 @@ public class Pan
      */
     public Pan( int[][] m )
     {
-        x = 400;
-        y = 360;
         maze = m;
         direction = "";
 
