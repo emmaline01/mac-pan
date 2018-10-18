@@ -3,41 +3,42 @@ import java.util.ArrayList;
 
 import apcs.Window;
 
+
 /**
  * 
- *  The MacPan class runs the game. It sets up the maze and the game window, creates all the
- *  game elements, and has the loop that the game runs in. 
+ * The MacPan class runs the game. It sets up the maze and the game window,
+ * creates all the game elements, and has the loop that the game runs in.
  *
- *  @author  Emmaline Mai, Shannon Liu, Anubha Kale
- *  @version May 24, 2018
- *  @author  Period: 5
- *  @author  Assignment: MacPan
+ * @author Emmaline Mai, Shannon Liu, Anubha Kale
+ * @version May 24, 2018
+ * @author Period: 5
+ * @author Assignment: MacPan
  *
  */
 
 public class MacPan
 {
-    
+
     public static void main( String[] args )
     {
         Window.size( 800, 400 );
-        
-        while(true)
+
+        while ( true )
         {
             Window.frame();
-            Window.out.background("black");
+            Window.out.background( "black" );
             Window.out.color( "white" );
             Window.out.fontSize( 40 );
-            Window.out.print( "W  E  L  C  O  M  E  !" , 240, 170 );
+            Window.out.print( "W  E  L  C  O  M  E  !", 240, 170 );
             Window.out.fontSize( 20 );
             Window.out.print( " Please press the spacebar to start!  ", 268, 240 );
-            
-            if (Window.key.pressed( "space" ))
+
+            if ( Window.key.pressed( "space" ) )
             {
                 break;
             }
         }
-        
+
         //4 = the jail for ghosts (no macaronis placed there)
         //1 = walls
         //0 = maze & macaroni
@@ -99,12 +100,20 @@ public class MacPan
         }
 
         Boolean touchedBlueMac = false;
-        
+
         while ( true )
         {
             Window.frame();
             Window.out.background( "blue" );
             
+            Window.out.color( "white" );
+            Window.out.fontSize( 12 );
+            Window.out.print( "Music: \"Journey\" by Declan DP " + 
+                "https://soundcloud.com/declandp " + 
+                "Attribution 3.0 Unported https://creativecommons.org/licenses/by/3.0/", 
+                10, 12 );
+            
+
             for ( int y = 0; y < maze.length; y++ )
             {
                 for ( int x = 0; x < maze[0].length; x++ )
@@ -117,78 +126,78 @@ public class MacPan
                     }
                     if ( p.touchingMacaroni( y, x ) )
                     {
-                        counter.setNumEaten( counter.getNumEaten() + 1);
+                        counter.setNumEaten( counter.getNumEaten() + 1 );
                         map.get( y * 100 + x ).remove();
-                        map.remove( y * 100 + x  );
+                        map.remove( y * 100 + x );
 
                     }
-                    if (p.touchingBlueMacaroni( y, x ))
+                    if ( p.touchingBlueMacaroni( y, x ) )
                     {
-                        counter.setNumEaten( counter.getNumEaten() + 1);
+                        counter.setNumEaten( counter.getNumEaten() + 1 );
                         map.get( y * 100 + x ).remove();
-                        map.remove( y * 100 + x  );
+                        map.remove( y * 100 + x );
                         touchedBlueMac = true;
                     }
                 }
             }
-            
+
             if ( map.isEmpty() )
             {
                 break; // end game
             }
-            
+
             for ( Integer i : map.keySet() )
             {
                 map.get( i ).place();
             }
-            
+
             p.move();
-            
-            if (touchedBlueMac == true)
+
+            if ( touchedBlueMac == true )
             {
                 pinky.setFrightened( 3 );
                 blinky.setFrightened( 3 );
                 inky.setFrightened( 3 );
                 touchedBlueMac = false;
             }
-            
+
             pinky.move();
             blinky.move();
             inky.move();
-            
-            if (pinky.isEaten() || blinky.isEaten() || inky.isEaten())
+
+            if ( pinky.isEaten() || blinky.isEaten() || inky.isEaten() )
             {
-                for (Ghost g : ghosts)
+                for ( Ghost g : ghosts )
                 {
-                    if (g.isEaten())
+                    if ( g.isEaten() )
                     {
                         counter.setNumEaten( counter.getNumEaten() + 5 );
                     }
                 }
             }
-            
+
             counter.displayCounter();
-            
-            if ( (p.touchingGhost( pinky ) && !pinky.isFrightened()) 
-                            || (p.touchingGhost( blinky ) && !blinky.isFrightened())
-                            || (p.touchingGhost( inky ) && !inky.isFrightened())) 
+
+            if ( ( p.touchingGhost( pinky ) && !pinky.isFrightened() )
+                || ( p.touchingGhost( blinky ) && !blinky.isFrightened() )
+                || ( p.touchingGhost( inky ) && !inky.isFrightened() ) )
             {
-                break; //end game
+                break; // end game
             }
         }
-        
+
         while ( true )
         {
-            if (map.isEmpty())
+            if ( map.isEmpty() )
             {
                 Window.frame();
                 Window.out.color( "black" );
                 Window.out.rectangle( 1, 1, 1600, 800 );
                 Window.out.color( "green" );
                 Window.out.fontSize( 40 );
-                Window.out.print( "   Y  O  U    W  O  N  !" , 210, 170 );
+                Window.out.print( "   Y  O  U    W  O  N  !", 210, 170 );
                 Window.out.fontSize( 30 );
-                Window.out.print( "Score: " + counter.getNumEaten()*10 , 340, 240);
+                Window.out.print( "Score: " + counter.getNumEaten() * 10, 340, 240 );
             }
             else
             {
@@ -197,11 +206,11 @@ public class MacPan
                 Window.out.rectangle( 1, 1, 1600, 800 );
                 Window.out.color( "red" );
                 Window.out.fontSize( 40 );
-                Window.out.print( "G  A  M  E    O  V  E  R" , 220, 170 );
+                Window.out.print( "G  A  M  E    O  V  E  R", 220, 170 );
                 Window.out.fontSize( 30 );
-                Window.out.print( "Score: " + counter.getNumEaten()*10 , 350, 240);
+                Window.out.print( "Score: " + counter.getNumEaten() * 10, 350, 240 );
             }
-            
+
         }
 
     }
